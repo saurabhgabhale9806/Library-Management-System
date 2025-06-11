@@ -1,8 +1,6 @@
-let express = require("express");
-let app = express();
+let app = require("./src/app.js");
 
-console.log("hello");
 let PORT = 3000;
 app.listen(PORT ,()=>{
-    console.log("Server Created at Port "+PORT);
+    console.log("Server started at Port "+PORT);
 });
