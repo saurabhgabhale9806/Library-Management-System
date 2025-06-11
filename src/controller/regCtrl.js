@@ -13,5 +13,12 @@ exports.adminLogin = (req,res)=> {
             username : "Admin",
             password : "Admin@123"
        }
+       const{username , password} = req.body;
+       if(username === adminData.username && password === adminData.password){
+            res.render("adminDashboard");
+       }
+       else{
+            //Student login.
+       }
     }
 

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="admindashboard.css" />
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>📘 Admin Dashboard</h1>
+    </header>
+    <div class="main">
+      <aside>
+        <nav>
+          <ul class="sidebar-menu">
+            <li class="dropdown">
+              <span onclick="toggleDropdown(this)">👨‍🎓 Student</span>
+              <ul class="dropdown-menu">
+                <li>Add Student</li>
+                <li>View Students</li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <span onclick="toggleDropdown(this)">📂 Category</span>
+              <ul class="dropdown-menu">
+                <li>Add Category</li>
+                <li>View Categories</li>
+              </ul>
+            </li>
+            <li class="dropdown">
+              <span onclick="toggleDropdown(this)">📚 Book</span>
+              <ul class="dropdown-menu">
+                <li>Add Book</li>
+                <li>View Books</li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+      <section class="form-section">
+        <h2>Add Student</h2>
+        <form>
+          <input type="text" placeholder="Enter Name" required />
+          <input type="email" placeholder="Enter Email" required />
+          <input type="password" placeholder="Enter Password" required />
+          <select required>
+            <option value="">Select Role</option>
+            <option value="student">Student</option>
+            <option value="admin">Admin</option>
+          </select>
+          <button type="submit">Add Student</button>
+        </form>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    function toggleDropdown(element) {
+      const dropdown = element.nextElementSibling;
+      dropdown.classList.toggle('show');
+    }
+  </script>
+</body>
+</html>
