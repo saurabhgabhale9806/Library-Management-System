@@ -3,7 +3,7 @@ let conn = mysql.createConnection({
         host: "localhost",
         user: "root",
         password: "root",
-        database: "miniproject"
+        database: "lmsdb"
     });
 conn.connect((err)=>{
     if(err){
