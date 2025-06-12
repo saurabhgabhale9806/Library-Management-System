@@ -7,18 +7,18 @@
 
 html, body {
   height: 100%;
+  border: 3px solid #000;
 }
 
 body {
+  background-size: contain;
   background-image: url('l.jpg'); 
   background-repeat: no-repeat;
-  background-size: cover;
   background-position: center;
-  
 }
 
 .container {
-  border: 3px solid #000;
+  /* border: 3px solid #000; */
   display: grid;
   grid-template-rows: 60px auto;
   grid-template-areas:
