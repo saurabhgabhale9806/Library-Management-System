@@ -1,5 +1,6 @@
 let regService = require("../services/regServices.js");
 let regModels = require("../model/regModel.js");
+const conn = require("../config/db.js");
 
 exports.homePage = (req, res) => {
     res.render("home.ejs");
@@ -28,7 +29,7 @@ exports.aboutUs = (req, res) => {
 };
 
 exports.getAddStudent = (req, res) => {
-    res.render("addStudent.ejs");
+    res.render("addStudent.ejs",{msg:""});
 };
 
 exports.postAddStudent = async (req, res) => {
@@ -41,9 +42,20 @@ exports.postAddStudent = async (req, res) => {
 
         const result = await regModels.addStudent(name.trim(), email.trim(), password.trim());
         console.log(result);
-        res.send("Student added successfully.");
+        res.render("addStudent.ejs",{msg:"Student added successfully."});
     } catch (err) {
         console.error(err);
         res.status(500).send("Error saving student.");
     }
 };
+
+exports.viewAllStudents = (req,res)=>{
+     conn.query("Select * from users",(err,result)=>{
+          if(err){
+               console.log(err);
+          }
+          else{
+               res.render("viewAllStudents.ejs",{data:result});
+          }
+     })
+}

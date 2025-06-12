@@ -9,5 +9,5 @@ router.post("/adminLogin", regCtrl.adminLogin);
 router.get("/about", regCtrl.aboutUs); 
 router.get("/student", regCtrl.getAddStudent);
 router.post("/saveStudent", regCtrl.postAddStudent);
-
+router.get("/viewStudent",regCtrl.viewAllStudents);
 module.exports = router;

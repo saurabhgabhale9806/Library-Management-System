@@ -5,34 +5,74 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="adminDashboard.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
+
+  <!-- Navbar -->
   <header class="navbar">
-    <h1>📚 Library Admin Panel</h1>
-    <div class="profile">Admin</div>
+    <div class="logo">📚 Library Dashboard</div>
+    <div class="profile">👤 Admin</div>
+    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
   </header>
 
-  <div class="container">
-    <aside class="sidebar">
-      <div class="menu">
-        <h3>Student</h3>
-        <a href="student">Add Student</a>
-        <a href="#">View Students</a>
-        <hr />
-        <h3>Category</h3>
-        <a href="#">Add Category</a>
-        <a href="#">View Categories</a>
-        <hr />
-        <h3>Book</h3>
-        <a href="#">Add Book</a>
-        <a href="#">View Books</a>
-      </div>
+  <div class="layout">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <nav>
+        <!-- Student -->
+        <div class="dropdown">
+          <h3 class="dropdown-toggle">Student ▼</h3>
+          <div class="dropdown-menu">
+            <a href="/student">➕ Add Student</a>
+            <a href="/viewStudent">📋 View Students</a>
+          </div>
+        </div>
+
+        <!-- Category -->
+        <div class="dropdown">
+          <h3 class="dropdown-toggle">Category ▼</h3>
+          <div class="dropdown-menu">
+            <a href="#">➕ Add Category</a>
+            <a href="#">📋 View Categories</a>
+          </div>
+        </div>
+
+        <!-- Book -->
+        <div class="dropdown">
+          <h3 class="dropdown-toggle">Book ▼</h3>
+          <div class="dropdown-menu">
+            <a href="#">➕ Add Book</a>
+            <a href="#">📚 View Books</a>
+          </div>
+        </div>
+      </nav>
     </aside>
 
+    <!-- Main Content -->
     <main class="main-content">
-      <h2>Welcome to the Admin Dashboard</h2>
-      <p>Select an option from the sidebar to get started.</p>
+      <h1>Welcome to the Admin Panel</h1>
+      <p>Choose an option from the sidebar to begin managing your library resources.</p>
     </main>
   </div>
+
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('active');
+  }
+
+  // Dropdown script
+  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+    toggle.addEventListener('click', () => {
+      const parent = toggle.parentElement;
+      parent.classList.toggle('open');
+      toggle.innerHTML = toggle.innerHTML.includes('▼')
+        ? toggle.innerHTML.replace('▼', '▲')
+        : toggle.innerHTML.replace('▲', '▼');
+    });
+  });
+</script>
+
 </body>
 </html>
