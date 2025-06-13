@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Error</title>
+    <link rel="stylesheet" href="error.css"> <!-- Adjust path as needed -->
+</head>
+<body>
+    <div class="error-container">
+        <h1>Error <%= code || 500 %></h1>
+        <p><%= msg %></p>
+        <a href="/">Go back to Home</a>
+    </div>
+</body>
+</html>

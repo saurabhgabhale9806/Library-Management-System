@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Category</title>
+  <link rel="stylesheet" href="addCategories.css" />
+</head>
+<body>
+  <div class="form-container">
+    <h2><span>➤</span> Add Category</h2>
+    <form action="saveCategories" method="post">
+      
+      <label for="name">Category Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter Category Name" required />
+
+      <button type="submit">Add Category</button>
+      <%=msg%>
+    </form>
+  </div>
+</body>
+</html>
