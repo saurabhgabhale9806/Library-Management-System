@@ -4,145 +4,65 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Admin Dashboard</title>
-  <link rel="stylesheet" href="adminDashboard.css" />
+  <link rel="stylesheet" href="/admindashboard.css" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
 
-<header class="navbar">
-  <div class="logo">📚 Library Dashboard</div>
-  <div class="profile">👤 Admin</div>
-  <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
-</header>
+  <!-- Header Partial -->
+  <%- include('partials/header') %>
 
-<div class="layout">
-  <aside class="sidebar" id="sidebar">
-    <nav>
-      <div class="dropdown">
-        <h3 class="dropdown-toggle">Student ▼</h3>
-        <div class="dropdown-menu">
-        <a href="/student" onclick="loadAddStudent(event)">➕ Add Student</a>
+  <div class="layout">
+    <!-- Sidebar Partial -->
+    <%- include('partials/sidebar') %>
 
-          <a href="/viewStudent">📋 View Students</a>
+    <main class="main-content">
+      <div class="card-section">
+        <div class="card student">
+          <h2>450 Students</h2>
+          <p>Total Registered</p>
+        </div>
+        <div class="card category">
+          <h2>310 Categories</h2>
+          <p>Active Categories</p>
+        </div>
+        <div class="card book">
+          <h2>560 Books</h2>
+          <p>Available Books</p>
         </div>
       </div>
 
-      <div class="dropdown">
-        <h3 class="dropdown-toggle">Category ▼</h3>
-        <div class="dropdown-menu">
-          <a href="/addCategories">➕ Add Category</a>
-          <a href="/viewCategories">📋 View Categories</a>
-        </div>
+      <div id="students" class="tab-content"></div>
+
+      <div id="books" class="tab-content" style="display: none;">
+        <table>
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Author</th>
+              <th>Category</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Atomic Habits</td>
+              <td>James Clear</td>
+              <td>Self-help</td>
+              <td>Available</td>
+            </tr>
+            <tr>
+              <td>Clean Code</td>
+              <td>Robert C. Martin</td>
+              <td>Programming</td>
+              <td>Issued</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
+    </main>
+  </div>
 
-      <div class="dropdown">
-        <h3 class="dropdown-toggle">Book ▼</h3>
-        <div class="dropdown-menu">
-          <a href="#">➕ Add Book</a>
-          <a href="#">📚 View Books</a>
-        </div>
-      </div>
-    </nav>
-  </aside>
-
-  <main class="main-content">
-    <div class="card-section">
-      <div class="card student">
-        <h2>450 Students</h2>
-        <p>Total Registered</p>
-      </div>
-      <div class="card category">
-        <h2>310 Categories</h2>
-        <p>Active Categories</p>
-      </div>
-      <div class="card book">
-        <h2>560 Books</h2>
-        <p>Available Books</p>
-      </div>
-    </div>
-
-    <!-- <div class="tab-buttons">
-      <button class="active" onclick="showTab('students')">Students</button>
-      <button onclick="showTab('books')">Books</button>
-    </div> -->
-
-    <div id="students" class="tab-content">
-    
-    </div>
-
-    <div id="books" class="tab-content" style="display: none;">
-      <table>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Category</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Atomic Habits</td>
-            <td>James Clear</td>
-            <td>Self-help</td>
-            <td>Available</td>
-          </tr>
-          <tr>
-            <td>Clean Code</td>
-            <td>Robert C. Martin</td>
-            <td>Programming</td>
-            <td>Issued</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-  </main>
-</div>
-
-<script>
-  function toggleSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('active');
-  }
-
-  document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-    toggle.addEventListener('click', () => {
-      const parent = toggle.parentElement;
-      parent.classList.toggle('open');
-      toggle.innerHTML = toggle.innerHTML.includes('▼')
-        ? toggle.innerHTML.replace('▼', '▲')
-        : toggle.innerHTML.replace('▲', '▼');
-    });
-  });
-
-  function showTab(tabId) {
-    document.querySelectorAll('.tab-content').forEach(tab => {
-      tab.style.display = 'none';
-    });
-    document.getElementById(tabId).style.display = 'block';
-    document.querySelectorAll('.tab-buttons button').forEach(btn => btn.classList.remove('active'));
-    const activeBtn = Array.from(document.querySelectorAll('.tab-buttons button')).find(btn => btn.textContent.toLowerCase().includes(tabId));
-    if (activeBtn) activeBtn.classList.add('active');
-  function loadAddStudent(event) {
-    event.preventDefault();
-
-    fetch('/student', {
-      headers: {
-        'X-Requested-With': 'XMLHttpRequest'
-      }
-    })
-    .then(response => response.text())
-    .then(html => {
-      showTab('students'); // Switch to student tab
-      document.getElementById('students').innerHTML = html;
-    })
-    .catch(error => {
-      console.error("Error loading Add Student form:", error);
-    });
-  }
-  }
-</script>
-
+  <script src="/dashboard.js"></script>
 </body>
 </html>

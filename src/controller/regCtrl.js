@@ -227,14 +227,90 @@ exports.searchCategory= async (req, res) => {
     }
 };
 
-  exports.categoryUpdateForm = (req,res)=>{
-    const id = req.query.id;
+exports.beforeUpdateCat = async (req, res) => {
+  const idParam = req.query.id;
 
-    conn.query("SELECT * FROM categories WHERE id = ?", [id], (err, result) => {
-    if (err) {
-      return res.send("Error loading form");
+  if (!idParam) {
+    console.error("No category ID provided in query params");
+    return res.status(400).render("error.ejs", {
+      code: 400,
+      msg: "Category ID not provided in the request.",
+    });
+  }
+
+  let id = parseInt(idParam.trim());
+  console.log("cat Id ---------->", id);
+
+  try {
+    const cat = await regModels.getbeforeupdateCat(id);
+
+    if (cat.length === 0) {
+      return res.status(404).render("error.ejs", {
+        code: 404,
+        msg: "Category not found.",
+      });
     }
 
-    res.render("updateCategories", { data: result, msg: " "});
-  });
-}
+    res.render("updateCategories.ejs", { cat });
+  } catch (err) {
+    console.error("Error fetching category for update:", err);
+    res.status(500).render("error.ejs", {
+      code: err.statusCode || 500,
+      msg: err.message || "Failed to fetch category data for update.",
+    });
+  }
+};
+
+exports.afterUpdateCat = async (req, res) => {
+  try {
+    const id = req.body.id.trim();
+    const name = req.body.name.trim();
+
+    console.log("ID:", id);
+    console.log("Name:", name);
+
+    const result = await regModels.getafterupdateCat(id, name);
+    console.log("Update result:", result);
+
+    res.redirect("/viewCategories");
+  } catch (err) {
+    console.error("Update error:", err.sqlMessage || err.message || err);
+    res.status(500).render("error.ejs", {
+      code: err.statusCode || 500,
+      msg: err.sqlMessage || err.message || "An error occurred while updating the category.",
+    });
+  }
+};
+
+
+// Show add book form with categories
+exports.addBookForm = async (req, res) => {
+  let categories = await regModels.getViewcategorie();
+  res.render("addBooks.ejs", { categories });
+};
+
+// Handle book saving
+exports.addBook = (req, res) => {
+  const { title, author, publisher, isbn, category, total_copies, available_copies, status } = req.body;
+  const image = req.file ? '/uploads/' + req.file.filename : '';
+
+  regModels.addBook(title, author, publisher, isbn, category, total_copies, available_copies, status, image)
+    .then(() => res.render("adminDashboard.ejs"))
+    .catch((err) => {
+      console.error("Add Book Error:", err);
+      res.render("error.ejs");
+    });
+};
+
+exports.viewBooks = async (req, res) => {
+  try {
+    const books = await regModels.viewBooks();
+    res.render("viewBooks.ejs", { books }); // filename should match
+  } catch (err) {
+    console.error(err);
+    res.status(500).render("error.ejs", {
+      code: 500,
+      msg: "Failed to load books.",
+    });
+  }
+};

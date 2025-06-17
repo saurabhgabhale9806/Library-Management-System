@@ -1,15 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Error</title>
-    <link rel="stylesheet" href="error.css"> <!-- Adjust path as needed -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Error</title>
+  <style>
+    body {
+      background-color: #fff5f5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .error-container {
+      background: #ffeaea;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px rgba(255, 0, 0, 0.2);
+      text-align: center;
+    }
+    .error-container h1 {
+      font-size: 3em;
+      color: white;
+      background-color: #2563eb;
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 8px;
+    }
+    .error-container p {
+      margin-top: 20px;
+      font-size: 1.2em;
+      color: #2563eb;
+      background: white;
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 5px;
+    }
+    .error-container a {
+      display: inline-block;
+      margin-top: 25px;
+      padding: 10px 20px;
+      background-color: #dc2626;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+    .error-container a:hover {
+      background-color: #b91c1c;
+    }
+  </style>
 </head>
 <body>
-    <div class="error-container">
-        <h1>Error <%= code || 500 %></h1>
-        <p><%= msg %></p>
-        <a href="/">Go back to Home</a>
-    </div>
+  <div class="error-container">
+    <h1>Error <%= typeof code !== 'undefined' ? code : 500 %></h1>
+    <p><%= typeof msg !== 'undefined' ? msg : "Unexpected error occurred." %></p>
+    <a href="/">Go back to Home</a>
+  </div>
 </body>
 </html>

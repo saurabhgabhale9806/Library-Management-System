@@ -1,44 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Add Student</title>
-  <link rel="stylesheet" href="addStudent.css">
+  <link rel="stylesheet" href="/admindashboard.css" />
+  <link rel="stylesheet" href="/addStudent.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="form-card">
-      <h2>➤ Add Student</h2>
-      <form id="studentForm" action="/saveStudent" method="POST">
-        <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" name="name" id="name" placeholder="Enter Name" required>
-          <span id="nameError" class="error"></span>
-        </div>
 
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" name="email" id="email" placeholder="Enter Email" required>
-          <span id="emailError" class="error"></span>
-        </div>
 
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" name="password" id="password" placeholder="Enter Password" required>
-          <span id="passwordError" class="error"></span>
-        </div>
+  <!-- Header Partial -->
+  <%- include('partials/header') %>
 
-        <div class="form-group">
-          <label for="confirm">Confirm Password</label>
-          <input type="password" name="confirm" id="confirm" placeholder="Confirm Password" required>
-          <span id="confirmError" class="error"></span>
-        </div>
+  <div class="layout">
+    <!-- Sidebar Partial -->
+    <%- include('partials/sidebar') %>
 
-        <input type="submit" class="btn-submit" value="Add Student">
-        <%= msg %>
-      </form>
-    </div>
+    <main class="main-content">
+      <div class="form-container">
+        <div class="form-card">
+          <h2>➤ Add Student</h2>
+          <form id="studentForm" action="/saveStudent" method="POST">
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" name="name" id="name" placeholder="Enter Name" required>
+              <span id="nameError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" name="email" id="email" placeholder="Enter Email" required>
+              <span id="emailError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password" placeholder="Enter Password" required>
+              <span id="passwordError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="confirm">Confirm Password</label>
+              <input type="password" name="confirm" id="confirm" placeholder="Confirm Password" required>
+              <span id="confirmError" class="error"></span>
+            </div>
+
+            <input type="submit" class="btn-submit" value="Add Student">
+            <% if (typeof msg !== 'undefined') { %>
+              <p class="message"><%= msg %></p>
+            <% } %>
+          </form>
+        </div>
+      </div>
+    </main>
   </div>
+
+  <script src="/dashboard.js"></script>
   <script src="/validations.js"></script>
 </body>
 </html>

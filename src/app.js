@@ -2,6 +2,8 @@ let express = require("express");
 let app = express();
 let cookie = require("cookie-parser");
 let session = require("express-session");
+const multer = require("multer");
+let path = require("path");
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

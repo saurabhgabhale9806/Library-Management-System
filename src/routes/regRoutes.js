@@ -1,5 +1,6 @@
 let express = require("express");
 let regCtrl = require("../controller/regCtrl.js");
+let multer = require("../middleware/upload.js");
 
 let router = express.Router();
 
@@ -25,6 +26,12 @@ router.post("/saveCategories",regCtrl.postAddCategories);
 router.get("/viewCategories",regCtrl.viewAllCategories);
 router.get("/deleteCategory",regCtrl.deleteCategory);
 router.get("/searchCat",regCtrl.searchCategory);
-router.get("/updateCategories",regCtrl.categoryUpdateForm);
-// router.post("/updateCategory",regCtrl.updateCategory);
+router.get("/beforeUpdateCat", regCtrl.beforeUpdateCat);
+router.post("/afterUpdateCat", regCtrl.afterUpdateCat);
+
+//Book routes
+router.get("/addBookForm",regCtrl.addBookForm);
+router.post("/addBook", multer.single("image"), regCtrl.addBook);
+
+router.get("/viewBooks",regCtrl.viewBooks);
 module.exports = router;

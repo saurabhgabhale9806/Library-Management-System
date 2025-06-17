@@ -117,3 +117,83 @@ exports.updateStudent = (name, email, password, id) => {
   });
 };
 
+exports.getbeforeupdateCat = (id) => {
+  return new Promise((res, rej) => {
+    conn.query("SELECT * FROM categories WHERE id = ?", [id], (err, result) => {
+      if (err) rej(err);
+      else res(result);
+    });
+  });
+};
+
+exports.getafterupdateCat = (id, name) => {
+  return new Promise((res, rej) => {
+    conn.query(
+      "UPDATE categories SET name = ? WHERE id = ?",
+      [name, id],
+      (err, result) => {
+        if (err) rej(err);
+        else res(result);
+      }
+    );
+  });
+};
+
+exports.getViewcategorie = () => {
+  return new Promise((resolve, reject) => {
+    conn.query("SELECT * FROM categories", (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result);
+      }
+    });
+  });
+};
+
+
+exports.addBook = (title, author, publisher, isbn, category, total_copies, available_copies, status, image) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      "INSERT INTO books (title, author, publisher, isbn, category, total_copies, available_copies, status, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+      [title, author, publisher, isbn, category, total_copies, available_copies, status, image],
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+
+exports.getAllBooks = () => {
+  return new Promise((res, rej) => {
+    conn.query(
+      "SELECT title, author, publisher, category, total_copies, available_copies, status, image FROM books",
+      (err, result) => {
+        if (err) {
+          rej(err);
+        } else {
+          console.log(result);
+          res(result);
+        }
+      }
+    );
+  });
+};
+
+exports.viewBooks = ()=>{
+    return new Promise((res,rej) =>{
+        conn.query("Select * from books",(err,result)=>{
+            if(err){
+                rej(err);
+            }
+            else{
+                console.log(result);
+                res(result);
+            }
+        })
+    })
+}

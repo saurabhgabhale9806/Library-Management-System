@@ -2,20 +2,21 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Add Category</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Update Category</title>
   <link rel="stylesheet" href="addCategories.css" />
 </head>
 <body>
-  <div class="form-container">
-    <h2><span>➤</span> Add Category</h2>
-    <form action="saveCategories" method="post">
+  <div class="container">
+    <h2>📝 Update Category</h2>
+
+    <form action="/afterUpdateCat" method="POST">
+      <input type="hidden" name="id" value="<%= cat[0].id %>">
       
       <label for="name">Category Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter Category Name" required />
+      <input type="text" name="name" id="name" value="<%= cat[0].name %>" required>
 
-      <button type="submit">Update Category</button>
-      <%=msg%>
+      <button type="submit">Update</button>
     </form>
   </div>
 </body>

@@ -4,19 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Category</title>
-  <link rel="stylesheet" href="addCategories.css" />
+  <link rel="stylesheet" href="/admindashboard.css" />
+  <link rel="stylesheet" href="/addCategories.css" />
 </head>
 <body>
-  <div class="form-container">
-    <h2><span>➤</span> Add Category</h2>
-    <form action="saveCategories" method="post">
-      
-      <label for="name">Category Name</label>
-      <input type="text" id="name" name="name" placeholder="Enter Category Name" required />
+  <!-- Include Header -->
+  <%- include('partials/header') %>
 
-      <button type="submit">Add Category</button>
-      <%=msg%>
-    </form>
+  <div class="layout">
+    <!-- Include Sidebar -->
+    <%- include('partials/sidebar') %>
+
+    <main class="main-content">
+      <div class="form-card">
+        <h2><span>➤</span> Add Category</h2>
+        <form action="/saveCategories" method="post">
+          <label for="name">Category Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter Category Name" required />
+
+          <button type="submit">Add Category</button>
+          <p class="message"><%= msg %></p>
+        </form>
+      </div>
+    </main>
   </div>
+  <script src="/dashboard.js"></script>
 </body>
 </html>
