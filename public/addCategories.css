@@ -6,72 +6,96 @@
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #4b0082, #1e90ff);
+  background: linear-gradient(135deg, #0f172a, #1e293b);
   min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
+  color: #e2e8f0;
 }
 
+/* Modern card style with soft edges and deep shadow */
 .form-container {
-  background: #fff;
-  border-radius: 10px;
-  padding: 30px;
-  max-width: 500px;
+  background: #1e1e2e;
+  border-radius: 18px;
+  padding: 35px 30px;
+  max-width: 450px;
   width: 100%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 4px 8px rgba(0, 0, 0, 0.3),
+    0 10px 20px rgba(0, 0, 0, 0.2),
+    0 15px 40px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+}
+
+.form-container:hover {
+  transform: translateY(-4px);
 }
 
 h2 {
   text-align: center;
   margin-bottom: 25px;
-  color: #222;
+  color: #f8fafc;
 }
 
 h2 span {
-  color: #000;
+  color: #7dd3fc;
   margin-right: 10px;
+  font-size: 24px;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 18px;
 }
 
 label {
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
+  color: #cbd5e1;
 }
 
 input {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1.8px solid #aaa;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1.5px solid #475569;
   font-size: 16px;
+  background-color: #0f172a;
+  color: #f1f5f9;
+  transition: border 0.3s ease;
+}
+
+input:focus {
+  border-color: #38bdf8;
+  outline: none;
+}
+
+input::placeholder {
+  color: #94a3b8;
 }
 
 button {
-  padding: 12px;
-  background: #1e90ff;
+  padding: 14px;
+  background: #3b82f6;
   color: #fff;
   border: none;
   font-size: 16px;
   font-weight: bold;
-  border-radius: 6px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: 0.3s ease-in-out;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
 button:hover {
-  background: #005ccc;
+  background: #2563eb;
+  transform: scale(1.02);
 }
 
-/* Responsive Design */
+/* Responsive */
 @media screen and (max-width: 600px) {
   .form-container {
-    padding: 20px;
+    padding: 25px;
   }
 
   h2 {
