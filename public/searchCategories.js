@@ -23,7 +23,7 @@ let searchStudents = (str) => {
 
         column = document.createElement("td");
         column.innerHTML = `
-            <a class="update" href="/updateStudent?id=${item.id}">
+            <a class="update" href="/updateCategory?id=${item.id}">
             UPDATE
         </a>`;
         row.appendChild(column);

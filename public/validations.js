@@ -1,4 +1,14 @@
 window.onload = function () {
+    function validatePasswords() {
+      const pass = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm').value;
+      if (pass !== confirm) {
+        alert('Passwords do not match!');
+        return false;
+      }
+      return true;
+    }
+
   console.log("Validation script loaded");
 
   const form = document.getElementById('studentForm');
@@ -67,7 +77,7 @@ window.onload = function () {
     const isConfirmValid = validateConfirmPassword();
 
     if (!(isNameValid && isEmailValid && isPasswordValid && isConfirmValid)) {
-      event.preventDefault(); // prevent form submission
+      event.preventDefault();
     }
   });
 };

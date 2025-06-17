@@ -13,7 +13,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookie());
 app.use(express.static("public"));
-
+app.use(session({
+    secret:"12345df",
+    resave: false,
+    saveUninitialized:false
+}));
 app.use("/", router);
 app.set('view engine', 'ejs');
 

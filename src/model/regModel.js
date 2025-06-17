@@ -100,3 +100,20 @@ exports.searchAllCategories = (searchValue) => {
             );
         });
     };
+
+exports.updateStudent = (name, email, password, id) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      "UPDATE users SET name = ?, email = ?, password = ? WHERE id = ?",
+      [name, email, password, id],
+      (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result);
+        }
+      }
+    );
+  });
+};
+

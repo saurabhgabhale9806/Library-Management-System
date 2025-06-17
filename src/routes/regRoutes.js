@@ -15,6 +15,9 @@ router.get("/viewStudent",regCtrl.viewAllStudents);
 router.get("/search",regCtrl.searchStud);
 router.get("/deleteStudent",regCtrl.deleteStudents);
 router.get("/error",regCtrl.errorPage);
+router.get("/update",regCtrl.loadUpdateForm);
+router.post("/update",regCtrl.updateStudent);
+router.get("/viewAllStudents", regCtrl.viewAllStudents);
 
 //Category Routes
 router.get("/addCategories", regCtrl.getAddCategories);

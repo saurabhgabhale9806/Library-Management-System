@@ -176,3 +176,51 @@ exports.searchCategory= async (req, res) => {
         res.status(STATUS.INTERNAL_ERROR).json({ error: "Something went wrong" });
     }
 };
+
+exports.loadUpdateForm = (req, res) => {
+  const id = req.query.id;
+
+  conn.query("SELECT * FROM users WHERE id = ?", [id], (err, result) => {
+    if (err) {
+      return res.send("Error loading form");
+    }
+
+    res.render("updateStudent", { user: result[0], msg: null });
+  });
+};
+
+exports.updateStudent = (req, res) => {
+  const { id, name, email, password, confirm } = req.body;
+
+  if (password !== confirm) {
+    return res.render("updateStudent.ejs", {
+      user: { id, name, email },
+      msg: "Passwords do not match!",
+    });
+  }
+
+  regModels.updateStudent(name, email, password, id)
+    .then(() => {
+      res.redirect("/viewAllStudents");
+    })
+    .catch((err) => {
+      let message = "Internal server error during update.";
+      if (err.code === 'ER_DUP_ENTRY') {
+        message = "Email already exists. Please choose another.";
+      }
+      res.render("updateStudent.ejs", {
+        user: { id, name, email },
+        msg: message,
+      });
+    });
+};
+
+// Show all students
+exports.viewAllStudents = (req, res) => {
+  conn.query("SELECT * FROM users WHERE role = 'member'", (err, result) => {
+    if (err) {
+      return res.send("Error loading students.");
+    }
+    res.render("viewAllStudents", { data: result });
+  });
+};

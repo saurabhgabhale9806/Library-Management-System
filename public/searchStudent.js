@@ -26,7 +26,10 @@ let searchStudents = (str) => {
         row.appendChild(column);
 
         column = document.createElement("td");
-        column.innerHTML = "" + item.password;
+        column.style.fontWeight = "bold";
+
+        
+        column.innerHTML = ".......";
         row.appendChild(column);
 
         column = document.createElement("td");
@@ -34,13 +37,14 @@ let searchStudents = (str) => {
         row.appendChild(column);
 
         column = document.createElement("td");
-        column.innerHTML = "" + item.created_at;
+        const date = new Date(item.created_at);
+        column.innerHTML = date.toLocaleString(); 
         row.appendChild(column);
 
         // Update button
         column = document.createElement("td");
         column.innerHTML = `
-            <a class="update" href="/updateStudent?id=${item.id}">
+            <a class="update" href="/update?id=${item.id}">
             UPDATE
         </a>`;
         row.appendChild(column);
