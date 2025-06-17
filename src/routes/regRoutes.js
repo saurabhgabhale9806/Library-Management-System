@@ -25,6 +25,6 @@ router.post("/saveCategories",regCtrl.postAddCategories);
 router.get("/viewCategories",regCtrl.viewAllCategories);
 router.get("/deleteCategory",regCtrl.deleteCategory);
 router.get("/searchCat",regCtrl.searchCategory);
-// router.get("/updateCategory",regCtrl.categoryUpdateForm);
-// router.post("/updateCategory",regCtrl.updateCategory);
+router.get("/updateCategory",regCtrl.categoryUpdateForm);
+router.post("/updateCategory",regCtrl.updateCategory);
 module.exports = router;
