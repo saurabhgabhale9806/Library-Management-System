@@ -347,3 +347,75 @@ exports.viewALLIssueBooks = (req, res) => {
         res.render("viewIssueBook.ejs", { data: result });
     });
 };
+
+exports.beforeUpdateBook = async (req, res) => {  
+  const idParam = req.query.id;
+
+  if (!idParam) {
+    return res.status(400).render("error.ejs", {
+      code: 400,
+      msg: "Book ID not provided.",
+    });
+  }
+
+  try {
+    const id = parseInt(idParam.trim());
+    const Book = await regModels.getbeforeupdateBooks(id);
+
+    if (Book.length === 0) {
+      return res.status(404).render("error.ejs", {
+        code: 404,
+        msg: "Book not found.",
+      });
+    }
+
+    const categories = await regModels.getAllCategories();
+
+    res.render("updateBook.ejs", { book: Book[0], categories });
+  } catch (err) {
+    res.status(500).render("error.ejs", {
+      code: 500,
+      msg: err.message || "Internal Server Error",
+    });
+  }
+};
+
+exports.afterUpdateBook = async (req, res) => {
+  try {
+    const {
+      id = "",
+      title = "",
+      author = "",
+      publisher = "",
+      isbn = "",
+      category = "",
+      total_copies = "",
+      available_copies = "",
+      status = "",
+      oldImage = ""
+    } = req.body;
+
+    const image = req.file ? req.file.filename : oldImage;
+
+    await regModels.getafterupdateBooks(
+      id.trim(),
+      title.trim(),
+      author.trim(),
+      publisher.trim(),
+      isbn.trim(),
+      category.trim(),
+      total_copies.trim(),
+      available_copies.trim(),
+      status.trim(),
+      image
+    );
+
+    res.redirect("/viewBooks");
+  } catch (err) {
+    console.error("Update error:", err);
+    res.status(500).render("error.ejs", {
+      code: 500,
+      msg: err.message || "Error updating book.",
+    });
+  }
+};

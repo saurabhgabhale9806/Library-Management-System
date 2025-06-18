@@ -2,41 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Add Book</title>
+  <title>Update Book</title>
   <link rel="stylesheet" href="/admindashboard.css" />
   <link rel="stylesheet" href="/addBook.css" />
 </head>
 <body>
-  <!-- Include Header -->
   <%- include('partials/header') %>
 
   <div class="layout">
-    <!-- Include Sidebar -->
     <%- include('partials/sidebar') %>
 
     <main class="main-content add-book-page">
       <div class="form-card">
-        <h2>➤ Add Book</h2>
-        <form action="/addBook" method="POST" enctype="multipart/form-data">
+        <h2>✎ Update Book</h2>
+        <form action="/afterUpdateBook" method="POST" enctype="multipart/form-data">
+          <input type="hidden" name="id" value="<%= book.id %>" />
+          <input type="hidden" name="oldImage" value="<%= book.image %>" />
 
           <div class="form-group">
             <label for="title">📕 Book Title</label>
-            <input type="text" name="title" id="title" placeholder="Enter Book Title" required />
+            <input type="text" name="title" id="title" value="<%= book.title %>" required />
           </div>
 
           <div class="form-group">
             <label for="author">👨‍💼 Author</label>
-            <input type="text" name="author" id="author" placeholder="Enter Author Name" required />
+            <input type="text" name="author" id="author" value="<%= book.author %>" required />
           </div>
 
           <div class="form-group">
             <label for="publisher">🏢 Publisher</label>
-            <input type="text" name="publisher" id="publisher" placeholder="Enter Publisher Name" required />
+            <input type="text" name="publisher" id="publisher" value="<%= book.publisher %>" required />
           </div>
 
           <div class="form-group">
             <label for="isbn">🔢 ISBN</label>
-            <input type="text" name="isbn" id="isbn" placeholder="Enter ISBN Number" required />
+            <input type="text" name="isbn" id="isbn" value="<%= book.isbn %>" required />
           </div>
 
           <div class="form-group">
@@ -44,38 +44,44 @@
             <select name="category" id="category" required>
               <option value="">-- Select Category --</option>
               <% categories.forEach(function(cat) { %>
-                <option value="<%= cat.name %>"><%= cat.name %></option>
+                <option value="<%= cat.name %>" <%= book.category === cat.name ? 'selected' : '' %>><%= cat.name %></option>
               <% }); %>
             </select>
           </div>
 
           <div class="form-group">
             <label for="total_copies">🧮 Total Copies</label>
-            <input type="number" name="total_copies" id="total_copies" placeholder="Total Copies" required />
+            <input type="number" name="total_copies" id="total_copies" value="<%= book.total_copies %>" required />
           </div>
 
           <div class="form-group">
             <label for="available_copies">📦 Available Copies</label>
-            <input type="number" name="available_copies" id="available_copies" placeholder="Available Copies" required />
+            <input type="number" name="available_copies" id="available_copies" value="<%= book.available_copies %>" required />
           </div>
 
           <div class="form-group">
             <label for="status">🚦 Status</label>
             <select name="status" id="status" required>
-              <option value="Available">Available</option>
-              <option value="Unavailable">Unavailable</option>
+              <option value="Available" <%= book.status === 'Available' ? 'selected' : '' %>>Available</option>
+              <option value="Unavailable" <%= book.status === 'Unavailable' ? 'selected' : '' %>>Unavailable</option>
             </select>
           </div>
 
           <div class="form-group full-width">
             <label for="image">📁 Book Image</label>
             <input type="file" name="image" id="image" accept="image/*" />
+
+            <% if (book.image && book.image.trim()) { %>
+              <p>Current image:</p>
+              <img src="/uploads/<%= book.image %>" style="max-width: 100px;" alt="Book Image" />
+            <% } else { %>
+              <p>No image available.</p>
+            <% } %>
           </div>
 
           <div class="form-group full-width">
-            <button type="submit"> Add Book</button>
+            <button type="submit">Update Book</button>
           </div>
-          
         </form>
       </div>
     </main>
