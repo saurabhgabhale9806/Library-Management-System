@@ -197,3 +197,21 @@ exports.viewBooks = ()=>{
         })
     })
 }
+
+exports.deleteBooks = (id) => {
+    return new Promise((resolve, reject) => {
+        conn.query("DELETE FROM books WHERE id = ?", [id], (err, result) => {
+            if (err) {
+                return reject(err);
+            }
+            conn.query("SELECT * FROM books", (err1, result1) => {
+                if (err1) {
+                    return reject(err1);
+                }
+                else{
+                  resolve(result1);
+                }
+            });
+        });
+    });
+};

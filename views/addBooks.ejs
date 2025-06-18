@@ -20,27 +20,27 @@
         <form action="/addBook" method="POST" enctype="multipart/form-data">
 
           <div class="form-group">
-            <label for="title">Book Title</label>
+            <label for="title">📕 Book Title</label>
             <input type="text" name="title" id="title" placeholder="Enter Book Title" required />
           </div>
 
           <div class="form-group">
-            <label for="author">Author</label>
+            <label for="author">👨‍💼 Author</label>
             <input type="text" name="author" id="author" placeholder="Enter Author Name" required />
           </div>
 
           <div class="form-group">
-            <label for="publisher">Publisher</label>
+            <label for="publisher">🏢 Publisher</label>
             <input type="text" name="publisher" id="publisher" placeholder="Enter Publisher Name" required />
           </div>
 
           <div class="form-group">
-            <label for="isbn">ISBN</label>
+            <label for="isbn">🔢 ISBN</label>
             <input type="text" name="isbn" id="isbn" placeholder="Enter ISBN Number" required />
           </div>
 
           <div class="form-group">
-            <label for="category">Category</label>
+            <label for="category">📚 Category</label>
             <select name="category" id="category" required>
               <option value="">-- Select Category --</option>
               <% categories.forEach(function(cat) { %>
@@ -50,17 +50,17 @@
           </div>
 
           <div class="form-group">
-            <label for="total_copies">Total Copies</label>
+            <label for="total_copies">🧮 Total Copies</label>
             <input type="number" name="total_copies" id="total_copies" placeholder="Total Copies" required />
           </div>
 
           <div class="form-group">
-            <label for="available_copies">Available Copies</label>
+            <label for="available_copies">📦 Available Copies</label>
             <input type="number" name="available_copies" id="available_copies" placeholder="Available Copies" required />
           </div>
 
           <div class="form-group">
-            <label for="status">Status</label>
+            <label for="status">🚦 Status</label>
             <select name="status" id="status" required>
               <option value="Available">Available</option>
               <option value="Unavailable">Unavailable</option>
@@ -68,12 +68,12 @@
           </div>
 
           <div class="form-group full-width">
-            <label for="image">Book Image</label>
+            <label for="image">📁 Book Image</label>
             <input type="file" name="image" id="image" accept="image/*" />
           </div>
 
           <div class="form-group full-width">
-            <button type="submit">Add Book</button>
+            <button type="submit"> Add Book</button>
           </div>
           
         </form>

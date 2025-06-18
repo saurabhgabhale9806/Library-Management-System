@@ -292,14 +292,16 @@ exports.addBookForm = async (req, res) => {
 // Handle book saving
 exports.addBook = (req, res) => {
   const { title, author, publisher, isbn, category, total_copies, available_copies, status } = req.body;
-  const image = req.file ? '/uploads/' + req.file.filename : '';
+  const image = '/uploads/' + req.file.filename;
 
   regModels.addBook(title, author, publisher, isbn, category, total_copies, available_copies, status, image)
-    .then(() => res.render("adminDashboard.ejs"))
+    .then(() => {
+      res.render("adminDashboard.ejs");
+    })
     .catch((err) => {
       console.error("Add Book Error:", err);
       res.render("error.ejs");
-    });
+    });
 };
 
 exports.viewBooks = async (req, res) => {
@@ -313,4 +315,35 @@ exports.viewBooks = async (req, res) => {
       msg: "Failed to load books.",
     });
   }
+};
+
+exports.deleteBooks = async (req, res) => {
+    try {
+        const id = parseInt(req.query.id.trim());
+        const result = await regModels.deleteBooks(id);
+        res.render("viewBooks.ejs", { books: result });
+    } catch (err) {
+        console.error(err);
+        res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+            msg: "Error deleting student.",
+            code: STATUS.INTERNAL_ERROR
+        });
+    }
+};
+
+exports.issueBooks = (req,res) => {
+    res.render("issueBooks.ejs",{msg:""});
+}
+
+exports.viewALLIssueBooks = (req, res) => {
+    conn.query("SELECT * FROM issue_details", (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+                msg: "Error fetching students.",
+                code: STATUS.INTERNAL_ERROR
+            });
+        }
+        res.render("viewIssueBook.ejs", { data: result });
+    });
 };

@@ -12,9 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const elapsed = currentTime - startTime;
       const progress = Math.min(elapsed / duration, 1);
       window.scrollTo(0, startY + difference * easeInOutQuad(progress));
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      }
+      if (progress < 1) requestAnimationFrame(step);
     }
 
     function easeInOutQuad(t) {
@@ -25,19 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function paginateBooks() {
-    const visibleCount = currentStartIndex === 0 ? 2 : 1;
+    const visibleCount = 3; // Show 3 cards per page
 
     cards.forEach((card, index) => {
-      if (index >= currentStartIndex && index < currentStartIndex + visibleCount) {
-        card.style.display = "block";
-      } else {
-        card.style.display = "none";
-      }
+      card.style.display = index >= currentStartIndex && index < currentStartIndex + visibleCount ? "block" : "none";
     });
 
     const pageInfo = document.getElementById('pageInfo');
     if (pageInfo) {
-      pageInfo.textContent = `Showing ${currentStartIndex + 1}${visibleCount > 1 ? ' - ' + (currentStartIndex + visibleCount) : ''} of ${cards.length}`;
+      const end = Math.min(currentStartIndex + visibleCount, cards.length);
+      pageInfo.textContent = `Showing ${currentStartIndex + 1} - ${end} of ${cards.length}`;
     }
 
     const prevButton = document.getElementById('prevPage');
@@ -50,18 +45,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const scrollTarget = cards[currentStartIndex];
     if (scrollTarget) {
       const topOffset = scrollTarget.getBoundingClientRect().top + window.scrollY - 80;
-      setTimeout(() => {
-        smoothScrollTo(topOffset, 1200); // Duration in ms (slower = higher)
-      }, 100);
+      setTimeout(() => smoothScrollTo(topOffset, 1200), 100);
     }
   }
 
   window.changePage = function (direction) {
-    const visibleCount = currentStartIndex === 0 ? 2 : 1;
+    const visibleCount = 3;
+    const maxIndex = cards.length - (cards.length % visibleCount || visibleCount);
     if (direction === 1 && currentStartIndex + visibleCount < cards.length) {
       currentStartIndex += visibleCount;
-    } else if (direction === -1) {
-      currentStartIndex = currentStartIndex === 2 ? 0 : currentStartIndex - 1;
+    } else if (direction === -1 && currentStartIndex > 0) {
+      currentStartIndex -= visibleCount;
     }
     paginateBooks();
   };
@@ -76,4 +70,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
   paginateBooks();
 });
-    

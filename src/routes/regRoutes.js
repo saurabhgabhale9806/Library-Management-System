@@ -32,6 +32,11 @@ router.post("/afterUpdateCat", regCtrl.afterUpdateCat);
 //Book routes
 router.get("/addBookForm",regCtrl.addBookForm);
 router.post("/addBook", multer.single("image"), regCtrl.addBook);
-
 router.get("/viewBooks",regCtrl.viewBooks);
+router.get("/deleteBook",regCtrl.deleteBooks);
+
+router.get("/viewIssuedBooks",regCtrl.viewALLIssueBooks);
+//issue Books routes
+
+router.get("/books",regCtrl.issueBooks);
 module.exports = router;

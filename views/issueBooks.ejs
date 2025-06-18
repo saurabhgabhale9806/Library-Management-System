@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Issue Book</title>
+  <link rel="stylesheet" href="/admindashboard.css">
+  <link rel="stylesheet" href="/issueBooks.css">
+</head>
+<body>
+
+  <!-- Include Header -->
+  <%- include('partials/header') %>
+
+  <div class="layout">
+    <!-- Include Sidebar -->
+    <%- include('partials/sidebar') %>
+
+    <!-- Main Content -->
+    <div class="form-container">
+      <div class="card">
+        <h2>➤ Issue Book</h2>
+        <form id="issueForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="studentName">Student Name</label>
+              <input type="text" id="studentName" name="studentName" placeholder="Enter Student Name" required>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" placeholder="Enter Email" required>
+            </div>
+
+            <div class="form-group">
+              <label for="category">Category</label>
+              <select id="category" name="category" required>
+                <option value=""> Select Category </option>
+                <option value="Science">Science</option>
+                <option value="Math">Math</option>
+                <option value="Literature">Literature</option>
+                <option value="Technology">Technology</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="bookName">Book Name</label>
+              <select id="bookName" name="bookName" required>
+                <option value=""> Select Book </option>
+                <option value="Physics Basics">Physics Basics</option>
+                <option value="Algebra 101">Algebra 101</option>
+                <option value="Shakespeare">Shakespeare</option>
+                <option value="Web Development">Web Development</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="issueDate">Issue Date</label>
+              <input type="date" id="issueDate" name="issueDate" required>
+            </div>
+
+            <div class="form-group">
+              <label for="returnDate">Return Date</label>
+              <input type="date" id="returnDate" name="returnDate" readonly>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="submit-btn">Issue Book</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const issueDateInput = document.getElementById('issueDate');
+    const returnDateInput = document.getElementById('returnDate');
+
+    issueDateInput.addEventListener('change', () => {
+      const issueDate = new Date(issueDateInput.value);
+      if (!isNaN(issueDate.getTime())) {
+        const returnDate = new Date(issueDate);
+        returnDate.setDate(returnDate.getDate() + 7);
+        returnDateInput.value = returnDate.toISOString().split('T')[0];
+      } else {
+        returnDateInput.value = '';
+      }
+    });
+  </script>
+  <script src="/dashboard.js"></script>
+
+</body>
+</html>
