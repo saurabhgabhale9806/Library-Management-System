@@ -1,6 +1,10 @@
 let express = require("express");
 let regCtrl = require("../controller/regCtrl.js");
-let multer = require("../middleware/upload.js");
+let upload = require("../middleware/upload.js"); 
+
+// then use it here:
+
+
 
 let router = express.Router();
 
@@ -31,12 +35,17 @@ router.post("/afterUpdateCat", regCtrl.afterUpdateCat);
 
 //Book routes
 router.get("/addBookForm",regCtrl.addBookForm);
-router.post("/addBook", multer.single("image"), regCtrl.addBook);
+router.post("/addBook", upload.single("image"), regCtrl.addBook);
 router.get("/viewBooks",regCtrl.viewBooks);
 router.get("/deleteBook",regCtrl.deleteBooks);
 
-router.get("/viewIssuedBooks",regCtrl.viewALLIssueBooks);
-//issue Books routes
+router.get("/beforeUpdateBook", regCtrl.beforeUpdateBook);
+router.post("/afterUpdateBook", upload.single("image"), regCtrl.afterUpdateBook);
 
+
+
+//issue Books routes
 router.get("/books",regCtrl.issueBooks);
+router.get("/viewIssuedBooks",regCtrl.viewALLIssueBooks);
+
 module.exports = router;
