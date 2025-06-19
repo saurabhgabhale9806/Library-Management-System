@@ -17,77 +17,140 @@
 
     <!-- Main Content -->
     <div class="form-container">
-      <div class="card">
+      <div class="card shadow-lg p-4 w-100">
         <h2>➤ Issue Book</h2>
-        <form id="issueForm">
+
+        <form action="/issueBook" method="POST">
+          <!-- Search User -->
+          <div class="form-group position-relative">
+            <label for="userSearch">Search User (Name or Email)</label>
+            <input type="text" class="form-control" id="userSearch" autocomplete="off" required />
+            <input type="hidden" name="user_id" id="user_id" required />
+            <div id="userSuggestions" class="list-group"></div>
+          </div>
+
+          <!-- Search Book -->
+          <div class="form-group position-relative">
+            <label for="categorySearch">Search Book (Title or Category)</label>
+            <input type="text" class="form-control" id="categorySearch" autocomplete="off" required />
+            <input type="hidden" name="book_id" id="book_id" required />
+            <div id="categorySuggestions" class="list-group"></div>
+          </div>
+
+          <!-- Issue & Return Dates -->
           <div class="form-grid">
             <div class="form-group">
-              <label for="studentName">Student Name</label>
-              <input type="text" id="studentName" name="studentName" placeholder="Enter Student Name" required>
+              <label for="issue_date">Issue Date</label>
+              <input type="date" class="form-control" id="issue_date" name="issue_date" required>
             </div>
 
             <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" placeholder="Enter Email" required>
-            </div>
-
-            <div class="form-group">
-              <label for="category">Category</label>
-              <select id="category" name="category" required>
-                <option value=""> Select Category </option>
-                <option value="Science">Science</option>
-                <option value="Math">Math</option>
-                <option value="Literature">Literature</option>
-                <option value="Technology">Technology</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="bookName">Book Name</label>
-              <select id="bookName" name="bookName" required>
-                <option value=""> Select Book </option>
-                <option value="Physics Basics">Physics Basics</option>
-                <option value="Algebra 101">Algebra 101</option>
-                <option value="Shakespeare">Shakespeare</option>
-                <option value="Web Development">Web Development</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="issueDate">Issue Date</label>
-              <input type="date" id="issueDate" name="issueDate" required>
-            </div>
-
-            <div class="form-group">
-              <label for="returnDate">Return Date</label>
-              <input type="date" id="returnDate" name="returnDate" readonly>
+              <label for="return_date">Return Date</label>
+              <input type="date" class="form-control" id="return_date" name="return_date" readonly required>
             </div>
           </div>
 
+          <!-- Status -->
+          <div class="form-group">
+            <label for="status">Status</label>
+            <select class="form-select" id="status" name="status" required>
+              <option value="">-- Select Status --</option>
+              <option value="issued">Issued</option>
+            </select>
+          </div>
+
           <div class="form-actions">
-            <button type="submit" class="submit-btn">Issue Book</button>
+            <button type="submit" class="submit-btn">Submit</button>
           </div>
         </form>
       </div>
     </div>
   </div>
 
-  <script>
-    const issueDateInput = document.getElementById('issueDate');
-    const returnDateInput = document.getElementById('returnDate');
+  <!-- JS -->
+  <script src="/dashboard.js"></script>
 
-    issueDateInput.addEventListener('change', () => {
-      const issueDate = new Date(issueDateInput.value);
+  <script>
+    // Auto calculate return date
+    document.getElementById('issue_date').addEventListener('change', function () {
+      const issueDate = new Date(this.value);
       if (!isNaN(issueDate.getTime())) {
-        const returnDate = new Date(issueDate);
-        returnDate.setDate(returnDate.getDate() + 7);
-        returnDateInput.value = returnDate.toISOString().split('T')[0];
-      } else {
-        returnDateInput.value = '';
+        issueDate.setDate(issueDate.getDate() + 7);
+        const yyyy = issueDate.getFullYear();
+        const mm = String(issueDate.getMonth() + 1).padStart(2, '0');
+        const dd = String(issueDate.getDate()).padStart(2, '0');
+        document.getElementById('return_date').value = `${yyyy}-${mm}-${dd}`;
+      }
+    });
+
+    // AJAX: Search Users
+    const userSearch = document.getElementById('userSearch');
+    const userSuggestions = document.getElementById('userSuggestions');
+    const userIdInput = document.getElementById('user_id');
+
+    userSearch.addEventListener('input', async function () {
+      const q = this.value.trim();
+      if (q.length < 2) {
+        userSuggestions.innerHTML = '';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/admin/api/users/search?q=${encodeURIComponent(q)}`);
+        const users = await res.json();
+
+        userSuggestions.innerHTML = '';
+        users.forEach(user => {
+          const item = document.createElement('button');
+          item.type = 'button';
+          item.className = 'list-group-item list-group-item-action';
+          item.textContent = `${user.name} (${user.email})`;
+          item.onclick = () => {
+            userSearch.value = `${user.name} (${user.email})`;
+            userIdInput.value = user.id;
+            userSuggestions.innerHTML = '';
+          };
+          userSuggestions.appendChild(item);
+        });
+      } catch (err) {
+        console.error('User search error:', err);
+      }
+    });
+
+    // AJAX: Search Books by Category or Title
+    const categorySearch = document.getElementById('categorySearch');
+    const categorySuggestions = document.getElementById('categorySuggestions');
+    const bookIdInput = document.getElementById('book_id');
+
+    categorySearch.addEventListener('input', async function () {
+      const q = this.value.trim();
+      if (q.length < 2) {
+        categorySuggestions.innerHTML = '';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/admin/api/category/search?q=${encodeURIComponent(q)}`);
+        const books = await res.json();
+
+        categorySuggestions.innerHTML = '';
+        books.forEach(book => {
+          const item = document.createElement('button');
+          item.type = 'button';
+          item.className = 'list-group-item list-group-item-action';
+          item.textContent = `${book.title} (${book.isbn})`;
+          item.onclick = () => {
+            categorySearch.value = `${book.title} (${book.isbn})`;
+            bookIdInput.value = book.id;
+            categorySuggestions.innerHTML = '';
+          };
+          categorySuggestions.appendChild(item);
+        });
+      } catch (err) {
+        console.error('Book search error:', err);
       }
     });
   </script>
-  <script src="/dashboard.js"></script>
 
 </body>
 </html>

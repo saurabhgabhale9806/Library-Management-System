@@ -264,3 +264,39 @@ exports.getAllCategories = () => {
   });
 };  
 
+exports.issueBook=(user_id,book_id,issue_date,return_date,status)=>{
+    return new Promise((resolve, reject) => {
+          
+             conn.query("insert into issue_details values ('0',?,?,?,?,?)",[book_id,user_id,issue_date,return_date,status],(err,result)=>{  
+                if (err) {
+                return reject(err); 
+                }
+                else{
+                    resolve(result);
+                }
+            });
+   
+    })
+}
+
+exports.searchName = (name) => {
+  return new Promise((resolve, reject) => {
+    const searchPattern = `%${name}%`;
+    conn.query("SELECT * FROM users WHERE name LIKE ?", [searchPattern], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  }); 
+};
+
+exports.searchbook = (category) => {
+  return new Promise((resolve, reject) => {
+    const searchPattern = `${category}%`; 
+    conn.query("SELECT * FROM books WHERE category LIKE ?", [searchPattern], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
+
+

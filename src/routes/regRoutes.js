@@ -46,6 +46,11 @@ router.post("/afterUpdateBook", upload.single("image"), regCtrl.afterUpdateBook)
 
 //issue Books routes
 router.get("/books",regCtrl.issueBooks);
+router.post("/issueBook",regCtrl.issueBook);
+
+router.get("/admin/api/users/search",regCtrl.searchName);
+router.get("/admin/api/category/search",regCtrl.searchbook);
+
 router.get("/viewIssuedBooks",regCtrl.viewALLIssueBooks);
 
 module.exports = router;
