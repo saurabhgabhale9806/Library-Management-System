@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Issued Book Records</title>
+    <link rel="stylesheet" href="/userDashboard.css">
+    <link rel="stylesheet" href="/userIssueBooks.css">
+</head>
+
+<body>
+
+    <!-- Include Header -->
+    <%- include('partials/userHeader') %>
+
+        <div class="layout">
+            <!-- Include Sidebar -->
+            <%- include('partials/userSidebar') %>
+
+                <div class="container">
+                    <div class="header">
+                        <h2>Issued Book Records</h2>
+                        <div class="search-box">
+                            <input type="text" placeholder="🔍 Search" />
+                        </div>
+                    </div>
+
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Book ID</th>
+                                <th>Issued By</th>
+                                <th>Issue Date</th>
+                                <th>Return Date</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td data-label="ID">1</td>
+                                <td data-label="Book ID">B101</td>
+                                <td data-label="Issued By">ankit</td>
+                                <td data-label="Issue Date">13/06/2025</td>
+                                <td data-label="Return Date">20/06/2025</td>
+                                <td data-label="Status"><span class="status active">Active</span></td>
+                                </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+        </div>
+        <script src="/dashboard.js"></script>
+</body>
+
+</html> 

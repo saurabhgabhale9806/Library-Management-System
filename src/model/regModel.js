@@ -230,37 +230,81 @@ exports.deleteBooks = (id) => {
   });
 };
 
-exports.getbeforeupdateBooks = (id) => {
+exports.viewUserBook = () => {
   return new Promise((res, rej) => {
-    conn.query("SELECT * FROM books WHERE id = ?", [id], (err, result) => {
-      if (err) rej(err);
-      else res(result);
-    });
-  });
-};
-
-exports.getafterupdateBooks = (id, title, author, publisher, isbn, category, total_copies, available_copies, status, image) => {
-  return new Promise((res, rej) => {
-    conn.query(
-      "UPDATE books SET title = ?, author = ?, publisher = ?, isbn = ?, category = ?, total_copies = ?, available_copies = ?, status = ?, image = ? WHERE id = ?",
-      [title, author, publisher, isbn, category, total_copies, available_copies, status, image, id],
-      (err, result) => {
-        if (err) rej(err);
-        else res(result);
-      }
-    );
-  });
-};
-
-exports.getAllCategories = () => {
-  return new Promise((resolve, reject) => {
-    conn.query("SELECT name FROM categories", (err, result) => {
+    conn.query("Select * from books", (err, result) => {
       if (err) {
-        reject(err);
+        rej(err);
       } else {
-        resolve(result);
+        console.log(result);
+        res(result);
       }
     });
   });
-};  
+};
+
+exports.searchAuthor = () => {
+  return new Promise((res, rej) => {
+    conn.query("Select * from books", (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+};
+
+exports.getLoginProfile = (username,password) => {
+  let promise = new Promise((res, rej) => {
+    console.log(username);
+    console.log(password);
+    conn.query("select * from users where email = ? and password = ?", [username,password], (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+  return promise;
+};
+
+exports.issueBook=(user_id,book_id,issue_date,return_date,status)=>{
+    return new Promise((resolve, reject) => {
+          
+             conn.query("insert into issue_details values ('0',?,?,?,?,?)",[book_id,user_id,issue_date,return_date,status],(err,result)=>{  
+                if (err) {
+                return reject(err); 
+                }
+                else{
+                    resolve(result);
+                }
+            });
+   
+    })
+}
+
+exports.searchName = (name) => {
+  return new Promise((resolve, reject) => {
+    const searchPattern = `%${name}%`;
+    conn.query("SELECT * FROM users WHERE name LIKE ?", [searchPattern], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  }); 
+};
+
+exports.searchbook = (category) => {
+  return new Promise((resolve, reject) => {
+    const searchPattern = `${category}%`; 
+    conn.query("SELECT * FROM books WHERE category LIKE ?", [searchPattern], (err, result) => {
+      if (err) return reject(err);
+      resolve(result);
+    });
+  });
+};
+
 

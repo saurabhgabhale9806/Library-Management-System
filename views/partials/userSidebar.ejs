@@ -1,0 +1,31 @@
+<aside class="sidebar" id="sidebar">
+  <nav>
+    <div class="dropdown">
+      <h3 class="dropdown-toggle" onclick="toggleDropdown(this)">Search ▼</h3>
+      <div class="dropdown-menu">
+        <a href="/searchByCategory" class="dropdown-card">
+          <h4>📚 By Category</h4>
+          <p>Search books by their category.</p>
+        </a>
+        <a href="/searchByAuthor" class="dropdown-card">
+          <h4>👨‍🏫 By Author</h4>
+          <p>Search books by author name.</p>
+        </a>
+      </div>
+    </div>
+
+    <div class="dropdown">
+      <h3 class="dropdown-toggle" onclick="toggleDropdown(this)">Manage My Books ▼</h3>
+      <div class="dropdown-menu">
+        <a href="/userIssueBooks" class="dropdown-card">
+          <h4>📋 Issued Books</h4>
+          <p>View books currently issued to you.</p>
+        </a>
+        <a href="/books/returned" class="dropdown-card">
+          <h4>📥 Returned Books</h4>
+          <p>See the books you’ve returned.</p>
+        </a>
+      </div>
+    </div>
+  </nav>
+</aside>
