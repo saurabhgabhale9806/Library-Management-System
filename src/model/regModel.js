@@ -1,55 +1,53 @@
 let conn = require("../config/db.js");
 
 exports.addStudent = (name, email, password) => {
-    return new Promise((resolve, reject) => {
-        const sql = "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'member')";
-        conn.query(sql, [name, email, password], (err, result) => {
-            if (err) {
-                console.log(err);
-                reject(err);
-            } else {
-                console.log(result);
-                resolve(result);
-            }
-        });
+  return new Promise((resolve, reject) => {
+    const sql =
+      "INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, 'member')";
+    conn.query(sql, [name, email, password], (err, result) => {
+      if (err) {
+        console.log(err);
+        reject(err);
+      } else {
+        console.log(result);
+        resolve(result);
+      }
     });
+  });
 };
 
-
-    exports.searchAllStudent = (searchValue) => {
-        return new Promise((res, rej) => {  
-            let value = '%' + searchValue + '%';
-            conn.query(
-                "SELECT * FROM users WHERE LOWER(name) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?)",
-                [value, value],
-                (err, result) => {
-                    if (err) {
-                        rej(err);
-                    } else {
-                        res(result);
-                    }
-                }
-            );
-        });
-    };
-
+exports.searchAllStudent = (searchValue) => {
+  return new Promise((res, rej) => {
+    let value = "%" + searchValue + "%";
+    conn.query(
+      "SELECT * FROM users WHERE LOWER(name) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?)",
+      [value, value],
+      (err, result) => {
+        if (err) {
+          rej(err);
+        } else {
+          res(result);
+        }
+      }
+    );
+  });
+};
 
 exports.deleteStudents = (id) => {
-    return new Promise((resolve, reject) => {
-        conn.query("DELETE FROM users WHERE id = ?", [id], (err, result) => {
-            if (err) {
-                return reject(err);
-            }
-            conn.query("SELECT * FROM users", (err1, result1) => {
-                if (err1) {
-                    return reject(err1);
-                }
-                else{
-                  resolve(result1);
-                }
-            });
-        });
+  return new Promise((resolve, reject) => {
+    conn.query("DELETE FROM users WHERE id = ?", [id], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      conn.query("SELECT * FROM users", (err1, result1) => {
+        if (err1) {
+          return reject(err1);
+        } else {
+          resolve(result1);
+        }
+      });
     });
+  });
 };
 
 exports.addCategories = (name) => {
@@ -67,39 +65,38 @@ exports.addCategories = (name) => {
 };
 
 exports.deleteCategory = (id) => {
-    return new Promise((resolve, reject) => {
-        conn.query("DELETE FROM categories WHERE id = ?", [id], (err, result) => {
-            if (err) {
-                return reject(err);
-            }
-            conn.query("SELECT * FROM categories", (err1, result1) => {
-                if (err1) {
-                    return reject(err1);
-                }
-                else{
-                  resolve(result1);
-                }
-            });
-        });
+  return new Promise((resolve, reject) => {
+    conn.query("DELETE FROM categories WHERE id = ?", [id], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      conn.query("SELECT * FROM categories", (err1, result1) => {
+        if (err1) {
+          return reject(err1);
+        } else {
+          resolve(result1);
+        }
+      });
     });
+  });
 };
 
 exports.searchAllCategories = (searchValue) => {
-        return new Promise((res, rej) => {  
-            let value = '%' + searchValue + '%';
-            conn.query(
-                "SELECT * FROM categories WHERE LOWER(name) LIKE LOWER(?)",
-                [value, value],
-                (err, result) => {
-                    if (err) {
-                        rej(err);
-                    } else {
-                        res(result);
-                    }
-                }
-            );
-        });
-    };
+  return new Promise((res, rej) => {
+    let value = "%" + searchValue + "%";
+    conn.query(
+      "SELECT * FROM categories WHERE LOWER(name) LIKE LOWER(?)",
+      [value, value],
+      (err, result) => {
+        if (err) {
+          rej(err);
+        } else {
+          res(result);
+        }
+      }
+    );
+  });
+};
 
 exports.updateStudent = (name, email, password, id) => {
   return new Promise((resolve, reject) => {
@@ -151,12 +148,31 @@ exports.getViewcategorie = () => {
   });
 };
 
-
-exports.addBook = (title, author, publisher, isbn, category, total_copies, available_copies, status, image) => {
+exports.addBook = (
+  title,
+  author,
+  publisher,
+  isbn,
+  category,
+  total_copies,
+  available_copies,
+  status,
+  image
+) => {
   return new Promise((resolve, reject) => {
     conn.query(
       "INSERT INTO books (title, author, publisher, isbn, category, total_copies, available_copies, status, image) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-      [title, author, publisher, isbn, category, total_copies, available_copies, status, image],
+      [
+        title,
+        author,
+        publisher,
+        isbn,
+        category,
+        total_copies,
+        available_copies,
+        status,
+        image,
+      ],
       (err, result) => {
         if (err) {
           reject(err);
@@ -184,34 +200,75 @@ exports.getAllBooks = () => {
   });
 };
 
-exports.viewBooks = ()=>{
-    return new Promise((res,rej) =>{
-        conn.query("Select * from books",(err,result)=>{
-            if(err){
-                rej(err);
-            }
-            else{
-                console.log(result);
-                res(result);
-            }
-        })
-    })
-}
+exports.viewBooks = () => {
+  return new Promise((res, rej) => {
+    conn.query("Select * from books", (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+};
 
 exports.deleteBooks = (id) => {
-    return new Promise((resolve, reject) => {
-        conn.query("DELETE FROM books WHERE id = ?", [id], (err, result) => {
-            if (err) {
-                return reject(err);
-            }
-            conn.query("SELECT * FROM books", (err1, result1) => {
-                if (err1) {
-                    return reject(err1);
-                }
-                else{
-                  resolve(result1);
-                }
-            });
-        });
+  return new Promise((resolve, reject) => {
+    conn.query("DELETE FROM books WHERE id = ?", [id], (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      conn.query("SELECT * FROM books", (err1, result1) => {
+        if (err1) {
+          return reject(err1);
+        } else {
+          resolve(result1);
+        }
+      });
     });
+  });
 };
+
+exports.viewUserBook = () => {
+  return new Promise((res, rej) => {
+    conn.query("Select * from books", (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+};
+
+exports.searchAuthor = () => {
+  return new Promise((res, rej) => {
+    conn.query("Select * from books", (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+};
+
+exports.getLoginProfile = (username,password) => {
+  let promise = new Promise((res, rej) => {
+    console.log(username);
+    console.log(password);
+    conn.query("select * from users where email = ? and password = ?", [username,password], (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+  return promise;
+};
+

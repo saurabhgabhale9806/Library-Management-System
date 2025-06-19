@@ -1,6 +1,7 @@
 let regService = require("../services/regServices.js");
 let regModels = require("../model/regModel.js");
 const conn = require("../config/db.js");
+const { profile } = require("console");
 
 // HTTP Status Codes
 const STATUS = {
@@ -17,6 +18,7 @@ exports.homePage = (req, res) => {
 exports.loginPage = (req, res) => {
     console.log("Login page requested");
     res.render("login.ejs", { msg: "" });
+
 };
 
 exports.adminLogin = (req, res) => {
@@ -307,7 +309,7 @@ exports.addBook = (req, res) => {
 exports.viewBooks = async (req, res) => {
   try {
     const books = await regModels.viewBooks();
-    res.render("viewBooks.ejs", { books }); // filename should match
+    res.render("viewBooks.ejs", { books });
   } catch (err) {
     console.error(err);
     res.status(500).render("error.ejs", {
@@ -347,3 +349,92 @@ exports.viewALLIssueBooks = (req, res) => {
         res.render("viewIssueBook.ejs", { data: result });
     });
 };
+
+
+
+//User Page
+
+exports.userLogin = (req, res) => {
+    console.log("Login page requested");
+    res.render("userLogin.ejs", { msg: "" });
+};
+
+
+// exports.studentLogin = (req, res) => {
+//     let loginId=req.session.uid;
+
+//     regModels.getLoginProfile(loginID)
+
+//    .then((profile)=>{
+//     if(profile.length>0){
+//       res.render("userDashboard.ejs",{user:profile[0]});
+//     }
+//     else{
+//       res.render("error.ejs",{msg:"user not found"});
+//     }
+//    })
+//    .catch((err)=>{
+//       console.log("Error fetching user",err);
+//       res.render("error.ejs",{msg:"Internal server problem"});
+//    })
+// };
+exports.studentLogin = (req, res) => {
+    let {username,password}=req.body;
+
+    regModels.getLoginProfile(username,password).then((profile)=>{
+    if(profile.length>0){
+      req.session.uid=profile[0].id;
+      res.render("userDashboard.ejs",{user:profile[0]});
+    }
+    else{
+      res.render("error.ejs",{msg:"user not found"});
+    }
+   })
+   .catch((err)=>{
+      console.log("Error fetching user",err);
+      res.render("error.ejs",{msg:"Internal server problem"});
+   })
+};
+
+
+//search
+exports.searchByCat = async (req, res) => {
+  try {
+    const books = await regModels.viewUserBook();
+    res.render("userViewBooks.ejs", { books }); // filename should match
+  } catch (err) {
+    console.error(err);
+    res.status(500).render("error.ejs", {
+      code: 500,
+      msg: "Failed to load books.",
+    });
+  }
+};
+
+exports.searchByAuth = async (req, res) => {
+  try {
+    const books = await regModels.searchAuthor();
+    res.render("userViewBooks.ejs", { books }); // filename should match
+  } catch (err) {
+    console.error(err);
+    res.status(500).render("error.ejs", {
+      code: 500,
+      msg: "Failed to load books.",
+    });
+  }
+};
+
+
+exports.userIssueBook = (req, res) => {
+    conn.query("SELECT * FROM issue_details", (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+                msg: "Error fetching students.",
+                code: STATUS.INTERNAL_ERROR
+            });
+        }
+        res.render("userIssueBook.ejs", { data: result });
+    });
+};
+

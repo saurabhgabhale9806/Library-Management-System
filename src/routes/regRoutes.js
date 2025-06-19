@@ -35,8 +35,22 @@ router.post("/addBook", multer.single("image"), regCtrl.addBook);
 router.get("/viewBooks",regCtrl.viewBooks);
 router.get("/deleteBook",regCtrl.deleteBooks);
 
-router.get("/viewIssuedBooks",regCtrl.viewALLIssueBooks);
-//issue Books routes
 
+//issue Books routes
 router.get("/books",regCtrl.issueBooks);
+router.get("/viewIssuedBooks",regCtrl.viewALLIssueBooks);
+
+
+// User Login
+
+router.get("/UserLogin",regCtrl.userLogin)
+router.post("/studLogin", regCtrl.studentLogin);
+
+//Search
+
+router.get("/searchByCategory",regCtrl.searchByCat);
+router.get("/searchByAuthor",regCtrl.searchByAuth);
+
+//Manage
+router.get("/userIssueBooks",regCtrl.userIssueBook);
 module.exports = router;

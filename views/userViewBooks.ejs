@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>View Books</title>
+
+  <link rel="stylesheet" href="/userDashboard.css" />
+  <link rel="stylesheet" href="/userViewBook.css" />
+</head>
+
+<body>
+
+  <!-- Include Header -->
+  <%- include('partials/userHeader') %>
+
+  <div class="layout">
+    <!-- Include Sidebar -->
+    <%- include('partials/userSidebar') %>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+      <!-- Search -->
+      <div class="search-bar">
+        <input 
+          type="text" 
+          class="search-box" 
+          placeholder="🔍 Search Book" 
+          onkeyup="searchBooks(this.value)"
+        />
+      </div>
+
+      <!-- Book Cards -->
+      <div id="bookContainer" class="book-container">
+        <% if (books && books.length > 0) { %>
+          <% books.forEach((book, index) => { %>
+            <div class="book-card book-item" data-index="<%= index %>">
+              <img src="<%= book.image %>" alt="Book Image" />
+              <div class="book-title"><%= book.title %></div>
+              <div class="book-description">
+                <strong>Author:</strong> <%= book.author %><br />
+                <strong>Publisher:</strong> <%= book.publisher %><br />
+                <strong>ISBN:</strong> <%= book.isbn %><br />
+                <strong>Category:</strong> <%= book.category %><br />
+                <strong>Total Copies:</strong> <%= book.total_copies %><br />
+                <strong>Available:</strong> <%= book.available_copies %><br />
+                <strong>Status:</strong> <%= book.status %>
+              </div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <p style="text-align: center;">No books available.</p>
+        <% } %>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-controls">
+        <button id="prevPage" onclick="changePage(-1)">⟵ Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage" onclick="changePage(1)">Next ⟶</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- JS Files -->
+  <script src="/paginationViewBook.js"></script>
+  <script src="/dashboard.js"></script>
+    <script src="/searchByCategory.js"></script>
+</body>
+</html>
