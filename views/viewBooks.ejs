@@ -36,7 +36,14 @@
         <% if (books && books.length > 0) { %>
           <% books.forEach((book, index) => { %>
             <div class="book-card book-item" data-index="<%= index %>">
-              <img src="<%= book.image %>" alt="Book Image" />
+
+              <!-- ✅ Fixed image path -->
+              <img 
+                src="<%= book.image.startsWith('/uploads/') ? book.image : '/uploads/' + book.image %>" 
+                alt="Book Image" 
+                width="100"
+              />
+
               <div class="book-title"><%= book.title %></div>
               <div class="book-description">
                 <strong>Author:</strong> <%= book.author %><br />
@@ -48,7 +55,7 @@
                 <strong>Status:</strong> <%= book.status %>
               </div>
               
-              <!-- Stacked Buttons -->
+              <!-- Buttons -->
               <div class="button-group">
                 <button><a href="/deleteBook?id=<%= book.id %>">Delete</a></button>
                 <button><a href="/beforeUpdateBook?id=<%= book.id %>">Update</a></button>
@@ -60,7 +67,7 @@
         <% } %>
       </div>
 
-      <!-- Pagination -->
+      <!-- Pagination Controls -->
       <div class="pagination-controls">
         <button id="prevPage" onclick="changePage(-1)">⟵ Previous</button>
         <span id="pageInfo"></span>
