@@ -63,6 +63,7 @@ body {
   color: #facc15;
   box-shadow: inset -1px 0 5px rgba(0,0,0,0.4);
   transition: left 0.3s ease-in-out;
+  overflow:auto;
 }
 
 .dropdown {
@@ -268,4 +269,4 @@ th {
   .main-content {
     padding: 20px;
   }
-}
+} 
