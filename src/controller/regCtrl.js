@@ -359,25 +359,6 @@ exports.userLogin = (req, res) => {
     res.render("userLogin.ejs", { msg: "" });
 };
 
-
-// exports.studentLogin = (req, res) => {
-//     let loginId=req.session.uid;
-
-//     regModels.getLoginProfile(loginID)
-
-//    .then((profile)=>{
-//     if(profile.length>0){
-//       res.render("userDashboard.ejs",{user:profile[0]});
-//     }
-//     else{
-//       res.render("error.ejs",{msg:"user not found"});
-//     }
-//    })
-//    .catch((err)=>{
-//       console.log("Error fetching user",err);
-//       res.render("error.ejs",{msg:"Internal server problem"});
-//    })
-// };
 exports.studentLogin = (req, res) => {
     let {username,password}=req.body;
 
