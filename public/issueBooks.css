@@ -29,7 +29,7 @@ body {
 }
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: flex-start;
@@ -37,23 +37,24 @@ body {
 /* Form container area */
 .form-container {
   flex: 1;
-  padding-top: 100px; 
+  padding: 15px; 
   background-color: #252537;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 20;
+  /* min-height: 20; */
+  overflow: auto  ;
 }
 
 /* Card box */
 .card {
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   background-color: #2f2f46;
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  padding: 20px;
-  margin: 20px; /* This ensures spacing from top/bottom if needed */
+  padding: 10px;
+  margin: 15px; /* This ensures spacing from top/bottom if needed */
 }
 
 

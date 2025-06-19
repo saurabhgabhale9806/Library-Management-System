@@ -18,10 +18,11 @@ exports.addStudent = (name, email, password) => {
 
 exports.searchAllStudent = (searchValue) => {
   return new Promise((res, rej) => {
-    let value = "%" + searchValue + "%";
+    const pattern = `(^|\\s)${searchValue}`;
+
     conn.query(
-      "SELECT * FROM users WHERE LOWER(name) LIKE LOWER(?) OR LOWER(email) LIKE LOWER(?)",
-      [value, value],
+      "SELECT * FROM users WHERE LOWER(name) REGEXP LOWER(?) OR LOWER(email) REGEXP LOWER(?)",
+      [pattern, pattern],
       (err, result) => {
         if (err) {
           rej(err);
@@ -32,6 +33,8 @@ exports.searchAllStudent = (searchValue) => {
     );
   });
 };
+
+
 
 exports.deleteStudents = (id) => {
   return new Promise((resolve, reject) => {

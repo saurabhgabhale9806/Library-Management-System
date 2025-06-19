@@ -293,7 +293,7 @@ exports.afterUpdateCat = async (req, res) => {
 // Show add book form with categories
 exports.addBookForm = async (req, res) => {
   let categories = await regModels.getViewcategorie();
-  res.render("addBooks.ejs", { categories });
+  res.render("addBooks.ejs", { categories ,msg: ""});
 };
 
 // Handle book saving
@@ -323,7 +323,8 @@ exports.addBook = (req, res) => {
       image
     )
     .then(() => {
-      res.render("adminDashboard.ejs");
+      res.render("adminDashboard.ejs",);
+      
     })
     .catch((err) => {
       console.error("Add Book Error:", err);
