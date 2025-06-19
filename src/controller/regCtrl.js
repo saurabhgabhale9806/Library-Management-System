@@ -1,6 +1,7 @@
 let regService = require("../services/regServices.js");
 let regModels = require("../model/regModel.js");
 const conn = require("../config/db.js");
+const { profile } = require("console");
 
 // HTTP Status Codes
 const STATUS = {
@@ -335,7 +336,7 @@ exports.addBook = (req, res) => {
 exports.viewBooks = async (req, res) => {
   try {
     const books = await regModels.viewBooks();
-    res.render("viewBooks.ejs", { books }); // filename should match
+    res.render("viewBooks.ejs", { books });
   } catch (err) {
     console.error(err);
     res.status(500).render("error.ejs", {
@@ -384,14 +385,15 @@ exports.beforeUpdateBook = async (req, res) => {
 
     res.render("updateBook.ejs", { book: Book[0], categories });
   } catch (err) {
+    console.error(err);
     res.status(500).render("error.ejs", {
       code: 500,
-      msg: err.message || "Internal Server Error",
+      msg: "Failed to load books.",
     });
   }
 };
 
-exports.afterUpdateBook = async (req, res) => {
+exports.searchByAuth = async (req, res) => {
   try {
     const {
       id = "",
@@ -423,10 +425,10 @@ exports.afterUpdateBook = async (req, res) => {
 
     res.redirect("/viewBooks");
   } catch (err) {
-    console.error("Update error:", err);
+    console.error(err);
     res.status(500).render("error.ejs", {
       code: 500,
-      msg: err.message || "Error updating book.",
+      msg: "Failed to load books.",
     });
   }
 };

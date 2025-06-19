@@ -233,39 +233,47 @@ exports.deleteBooks = (id) => {
   });
 };
 
-exports.getbeforeupdateBooks = (id) => {
+exports.viewUserBook = () => {
   return new Promise((res, rej) => {
-    conn.query("SELECT * FROM books WHERE id = ?", [id], (err, result) => {
-      if (err) rej(err);
-      else res(result);
-    });
-  });
-};
-
-exports.getafterupdateBooks = (id, title, author, publisher, isbn, category, total_copies, available_copies, status, image) => {
-  return new Promise((res, rej) => {
-    conn.query(
-      "UPDATE books SET title = ?, author = ?, publisher = ?, isbn = ?, category = ?, total_copies = ?, available_copies = ?, status = ?, image = ? WHERE id = ?",
-      [title, author, publisher, isbn, category, total_copies, available_copies, status, image, id],
-      (err, result) => {
-        if (err) rej(err);
-        else res(result);
-      }
-    );
-  });
-};
-
-exports.getAllCategories = () => {
-  return new Promise((resolve, reject) => {
-    conn.query("SELECT name FROM categories", (err, result) => {
+    conn.query("Select * from books", (err, result) => {
       if (err) {
-        reject(err);
+        rej(err);
       } else {
-        resolve(result);
+        console.log(result);
+        res(result);
       }
     });
   });
-};  
+};
+
+exports.searchAuthor = () => {
+  return new Promise((res, rej) => {
+    conn.query("Select * from books", (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+};
+
+exports.getLoginProfile = (username,password) => {
+  let promise = new Promise((res, rej) => {
+    console.log(username);
+    console.log(password);
+    conn.query("select * from users where email = ? and password = ?", [username,password], (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+  return promise;
+};
 
 exports.issueBook=(user_id,book_id,issue_date,return_date,status)=>{
     return new Promise((resolve, reject) => {
