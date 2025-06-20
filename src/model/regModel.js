@@ -1,3 +1,4 @@
+const { rejects } = require("assert");
 let conn = require("../config/db.js");
 
 exports.addStudent = (name, email, password) => {
@@ -299,6 +300,62 @@ exports.searchbook = (category) => {
   });
 };
 
+
+exports.viewUserBook = () => {
+  return new Promise((res, rej) => {
+    conn.query("Select * from books", (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+};
+
+exports.searchAuthor = () => {
+  return new Promise((res, rej) => {
+    conn.query("Select * from books", (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+};
+
+exports.getLoginProfile = (username,password) => {
+  let promise = new Promise((res, rej) => {
+    console.log(username);
+    console.log(password);
+    conn.query("select * from users where email = ? and password = ?", [username,password], (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+  return promise;
+};
+
+
+exports.userDetail = (id) => {
+    return new Promise((res, rej) => {
+        conn.query("SELECT * FROM users WHERE id = ?", [id], (err, result) => {
+            if (err) {
+                console.log(err);
+                rej(err);
+            } else {
+                res(result);
+            }
+        });
+    });
+};
 
 //user Models
 

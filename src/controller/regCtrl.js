@@ -509,10 +509,12 @@ exports.searchbook = async (req, res) => {
     res.status(500).json({ error: "Database error" });
   }
 };
+
+
 //User Page
 
 exports.userLogin = (req, res) => {
-    console.log("Login page requested");
+    console.log("User Login page requested");
     res.render("userLogin.ejs", { msg: "" });
 };
 
@@ -563,16 +565,240 @@ exports.searchByAuth = async (req, res) => {
 };
 
 
+// exports.userIssueBook = (req, res) => {
+//   let id=req.session.id;
+//     conn.query("select * from issue_details where issued_by= id;", (err, result) => {
+//         if (err) {
+
+//             console.error(err);
+//             return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+//                 msg: "Error fetching students.",
+//                 code: STATUS.INTERNAL_ERROR
+//             });
+//         }
+//         regModels.userDetail(id).then((res)=>{
+//   res.render("userSidebar.ejs", {iss: result ,data:r});
+//         });
+        
+//     });
+// }
+
 exports.userIssueBook = (req, res) => {
-    conn.query("SELECT * FROM issue_details", (err, result) => {
-        if (err) {
-            console.error(err);
+    const userId = req.session.uid;
+
+    // Check if user is logged in
+    if (!userId) {
+        return res.status(401).render("error.ejs", {
+            msg: "Unauthorized access. Please login first.",
+            code: 401
+        });
+    }
+
+    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+        if (err || users.length === 0) {
+            console.error("User fetch error:", err || "No user found");
             return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-                msg: "Error fetching students.",
+                msg: "Error fetching user.",
                 code: STATUS.INTERNAL_ERROR
             });
         }
-        res.render("userIssueBook.ejs", { data: result });
+
+        const sql = `
+            SELECT 
+                issue_details.id,
+                users.name AS name,
+                books.title AS title,
+                issue_details.issue_date,
+                issue_details.return_date,
+                issue_details.status
+            FROM 
+                issue_details
+            JOIN users ON issue_details.issued_by = users.id
+            JOIN books ON issue_details.book_id = books.id
+            WHERE 
+                issue_details.issued_by = ? 
+                AND issue_details.status = 'issued'
+        `;
+
+        conn.query(sql, [userId], (err, issues) => {
+            if (err) {
+                console.error("SQL error:", err);
+                return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+                    msg: "Error fetching issued books.",
+                    code: STATUS.INTERNAL_ERROR
+                });
+            }
+
+            res.render("userIssueBook.ejs", { data: users[0], issues });
+        });
     });
 };
 
+
+
+exports.userDashboard = (req, res) => {
+    const userId = req.session.uid;
+
+    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+        if (err || users.length === 0) {
+            return res.status(500).render("error.ejs", {
+                msg: "User not found",
+                code: 500
+            });exports.userIssueBook = (req, res) => {
+    const userId = req.session.uid;
+
+    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+        if (err || users.length === 0) {
+            return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+                msg: "Error fetching user.",
+                code: STATUS.INTERNAL_ERROR
+            });
+        }
+
+        const sql = `
+            SELECT 
+                issue_details.id,
+                users.name AS name,
+                books.title AS title,
+                issue_details.issue_date,
+                issue_details.return_date,
+                issue_details.status
+            FROM 
+                issue_details
+            JOIN users ON issue_details.issued_by = users.id
+            JOIN books ON issue_details.book_id = books.id
+            WHERE 
+                issue_details.issued_by = ? 
+                AND issue_details.status = 'issued'
+        `;
+
+        conn.query(sql, [userId], (err, issues) => {
+            if (err) {
+                console.error("SQL error:", err); // log the actual SQL error
+                return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+                    msg: "Error fetching issued books.",
+                    code: STATUS.INTERNAL_ERROR
+                });
+            }
+
+            res.render("userIssueBook.ejs", { data: users[0], issues });
+        });
+    });
+};
+
+        }
+
+        res.render("userDashboard.ejs", { data: users[0] });
+    });
+};
+
+
+
+exports.userReturnBook = (req, res) => {
+    const userId = req.session.uid;
+
+    // Check if user is logged in
+    if (!userId) {
+        return res.status(401).render("error.ejs", {
+            msg: "Unauthorized access. Please login first.",
+            code: 401
+        });
+    }
+
+    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+        if (err || users.length === 0) {
+            console.error("User fetch error:", err || "No user found");
+            return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+                msg: "Error fetching user.",
+                code: STATUS.INTERNAL_ERROR
+            });
+        }
+
+        const sql = `
+            SELECT 
+                issue_details.id,
+                users.name AS name,
+                books.title AS title,
+                issue_details.issue_date,
+                issue_details.return_date,
+                issue_details.status
+            FROM 
+                issue_details
+            JOIN users ON issue_details.issued_by = users.id
+            JOIN books ON issue_details.book_id = books.id
+            WHERE 
+                issue_details.issued_by = ? 
+                AND issue_details.status = 'returned'
+        `;
+
+        conn.query(sql, [userId], (err, issues) => {
+            if (err) {
+                console.error("SQL error:", err);
+                return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+                    msg: "Error fetching issued books.",
+                    code: STATUS.INTERNAL_ERROR
+                });
+            }
+
+            res.render("userIssueBook.ejs", { data: users[0], issues });
+        });
+    });
+};
+
+
+
+exports.userReturnDashboard = (req, res) => {
+    const userId = req.session.uid;
+
+    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+        if (err || users.length === 0) {
+            return res.status(500).render("error.ejs", {
+                msg: "User not found",
+                code: 500
+            });exports.userIssueBook = (req, res) => {
+    const userId = req.session.uid;
+
+    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+        if (err || users.length === 0) {
+            return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+                msg: "Error fetching user.",
+                code: STATUS.INTERNAL_ERROR
+            });
+        }
+
+        const sql = `
+            SELECT 
+                issue_details.id,
+                users.name AS name,
+                books.title AS title,
+                issue_details.issue_date,
+                issue_details.return_date,
+                issue_details.status
+            FROM 
+                issue_details
+            JOIN users ON issue_details.issued_by = users.id
+            JOIN books ON issue_details.book_id = books.id
+            WHERE 
+                issue_details.issued_by = ? 
+                AND issue_details.status = 'returned'
+        `;
+
+        conn.query(sql, [userId], (err, issues) => {
+            if (err) {
+                console.error("SQL error:", err); // log the actual SQL error
+                return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+                    msg: "Error fetching issued books.",
+                    code: STATUS.INTERNAL_ERROR
+                });
+            }
+
+            res.render("userIssueBook.ejs", { data: users[0], issues });
+        });
+    });
+};
+
+        }
+
+        res.render("userDashboard.ejs", { data: users[0] });
+    });
+};

@@ -38,6 +38,17 @@ router.get("/viewBooks", regCtrl.viewBooks);
 router.get("/deleteBook", regCtrl.deleteBooks);
 
 router.get("/beforeUpdateBook", regCtrl.beforeUpdateBook);
+router.post("/afterUpdateBook", upload.single("image"), regCtrl.afterUpdateBook);
+
+// User Login
+router.get("/UserLogin",regCtrl.userLogin)
+router.post("/studLogin", regCtrl.studentLogin);
+
+//Search
+
+router.get("/searchByCategory",regCtrl.searchByCat);
+router.get("/searchByAuthor",regCtrl.searchByAuth);
+
 router.post(
   "/afterUpdateBook",
   upload.single("image"),
@@ -50,6 +61,14 @@ router.post("/issueBook", regCtrl.issueBook);
 
 router.get("/admin/api/users/search", regCtrl.searchName);
 router.get("/admin/api/category/search", regCtrl.searchbook);
+
+router.get("/viewIssuedBooks",regCtrl.viewALLIssueBooks);
+
+//Manage
+router.get("/userDashboard", regCtrl.userDashboard);
+router.get("/userIssueBooks", regCtrl.userIssueBook);
+router.get("/userReturnDashboard", regCtrl.userReturnDashboard);
+router.get("/userReturnBooks", regCtrl.userReturnBook);
 
 router.get("/viewIssuedBooks", regCtrl.viewALLIssueBooks);
 router.get("/viewReturnedBooks", regCtrl.viewReturnedBooks);
