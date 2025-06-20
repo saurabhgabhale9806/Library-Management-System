@@ -36,7 +36,7 @@ router.get("/viewBooks",regCtrl.viewBooks);
 router.get("/deleteBook",regCtrl.deleteBooks);
 
 
-//issue Books routes
+//issue Books 
 router.get("/books",regCtrl.issueBooks);
 router.get("/viewIssuedBooks",regCtrl.viewALLIssueBooks);
 
@@ -53,4 +53,5 @@ router.get("/searchByAuthor",regCtrl.searchByAuth);
 
 //Manage
 router.get("/userIssueBooks",regCtrl.userIssueBook);
+
 module.exports = router;
