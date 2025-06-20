@@ -33,7 +33,6 @@
                         <th>Issue Date</th>
                         <th>Return Date</th>
                         <th>Status</th>
-                        <th>Delete</th>
                         <th>Update</th>
                     </tr>
                 </thead>
@@ -54,11 +53,11 @@
                                     <%= item.status %>
                                 </span>
                             </td>
-                            <td data-label="Delete">
+                            <!-- <td data-label="Delete">
                                 <div class="button-group">
                                     <a class="btn btn-delete" href="/deleteIssued?id=<%= item.id %>">Delete</a>
                                 </div>
-                            </td>
+                            </td> -->
                             <td data-label="Update">
                                 <div class="button-group">
                                     <a class="btn btn-update" href="/updateIssued?id=<%= item.id %>">Update</a>
