@@ -41,7 +41,7 @@
               </tr>
             <% } else { %>
               <% data.forEach((item, index) => { %>
-                <tr>
+                <tr class="category-row">
                   <td data-label="SRNO."><%= index + 1 %></td>
                   <td data-label="Name"><%= item.name %></td>
                   <td data-label="Delete">
@@ -59,10 +59,19 @@
             <% } %>
           </tbody>
         </table>
+
+        <!-- Pagination Controls -->
+        <div class="pagination">
+          <button id="prevPage" onclick="changePage(-1)">Previous</button>
+          <span id="pageInfo">Page 1</span>
+          <button id="nextPage" onclick="changePage(1)">Next</button>
+        </div>
       </div>
     </main>
   </div>
 
+  <!-- Scripts -->
+  <script src="/categoryPagination.js"></script>
   <script src="/searchCategories.js"></script>
   <script src="/dashboard.js"></script>
 </body>
