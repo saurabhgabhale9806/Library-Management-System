@@ -8,6 +8,11 @@
   font-family: 'Inter', sans-serif;
 }
 
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: #f1f5f9;
   color: #1e293b;
@@ -25,7 +30,16 @@ body {
   background-color: #f8fafc;
 }
 
-/* Main Content */
+.sidebar {
+  width: 240px;
+  background-color: #ffffff;
+  padding: 1rem;
+  min-height: 100vh;
+  border-right: 1px solid #e2e8f0;
+  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.03);
+  transition: transform 0.3s ease;
+}
+
 .main-content {
   flex: 1;
   padding: 32px 48px;
@@ -34,14 +48,6 @@ body {
   justify-content: center;
   align-items: flex-start;
   overflow-y: auto;
-}
-.sidebar {
-  width: 240px;
-  background-color: #ffffff;
-  padding: 1rem;
-  min-height: 100vh;
-  border-right: 1px solid #e2e8f0;
-  box-shadow: 2px 0 10px rgba(0, 0, 0, 0.03);
 }
 
 /* Container */
@@ -53,7 +59,6 @@ body {
   border-radius: 12px;
   border: 1px solid #e2e8f0;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
-  
 }
 
 /* Search Header */
@@ -81,7 +86,7 @@ body {
   background-color: #ffffff;
   color: #1e293b;
   font-size: 16px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
 .search input::placeholder {
@@ -94,6 +99,12 @@ body {
   outline: none;
 }
 
+/* Table Responsive Wrapper */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
 /* Table Styling */
 table {
   width: 100%;
@@ -101,6 +112,7 @@ table {
   background-color: #ffffff;
   border-radius: 8px;
   overflow: hidden;
+  min-width: 600px;
 }
 
 thead {
@@ -132,7 +144,9 @@ tr:hover {
   color: #ffffff;
   border-radius: 6px;
   text-decoration: none;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
+  border: none;
+  cursor: pointer;
 }
 
 .update {
@@ -167,7 +181,7 @@ tr:hover {
   border-radius: 6px;
   color: #ffffff;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .pagination button:hover {
@@ -184,30 +198,72 @@ tr:hover {
   font-size: 16px;
 }
 
-/* Responsive Design */
+/* Tablet Responsive */
+@media screen and (max-width: 1024px) {
+  .main-content {
+    padding: 24px 8px;
+  }
+  .container {
+    max-width: 98vw;
+    padding: 16px;
+  }
+  .sidebar {
+    width: 180px;
+    padding: 0.75rem;
+  }
+  table {
+    min-width: 480px;
+  }
+}
+
+/* Mobile Responsive */
 @media screen and (max-width: 768px) {
   .layout {
     flex-direction: column;
   }
-
-  .main-content {
-    padding: 16px;
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: none;
+    padding: 0.75rem 0.5rem;
+    order: 1;
   }
-
+  .main-content {
+    padding: 16px 4px;
+    order: 2;
+  }
+  .container {
+    padding: 8px;
+    border-radius: 8px;
+  }
   .search {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 8px;
   }
-
+  .search h2 {
+    font-size: 20px;
+  }
+  .search input {
+    font-size: 15px;
+    height: 40px;
+  }
+  .table-responsive {
+    overflow-x: auto;
+  }
+  table {
+    min-width: 400px;
+  }
+  /* Mobile Table Styles: Only apply block display on small screens! */
   table, thead, tbody, th, td, tr {
     display: block;
     width: 100%;
   }
-
   thead {
     display: none;
   }
-
   tr {
     margin-bottom: 16px;
     background-color: #ffffff;
@@ -215,22 +271,42 @@ tr:hover {
     border-radius: 8px;
     padding: 10px;
   }
-
   td {
     position: relative;
     padding-left: 50%;
     text-align: right;
     border: none;
     border-bottom: 1px solid #e2e8f0;
+    min-height: 40px;
+    font-size: 15px;
   }
-
   td::before {
     content: attr(data-label);
     position: absolute;
-    left: 10px;
+    left: 12px;
     top: 10px;
     font-weight: 600;
     color: #64748b;
     text-align: left;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
+
+/* Extra Small Devices */
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+  .container {
+    padding: 4px;
+  }
+  .sidebar {
+    padding: 0.5rem 0.25rem;
+  }
+  .pagination button,
+  .btn {
+    padding: 8px 10px;
+    font-size: 13px;
   }
 }

@@ -14,6 +14,8 @@ body {
   color: #1e293b;
   min-height: 100vh;
   line-height: 1.6;
+  padding: 10px;
+  overflow-x: hidden;
 }
 
 /* Container */
@@ -25,20 +27,22 @@ body {
   border: 1px solid #e2e8f0;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
   margin: auto;
+  width: 100%;
 }
 
-/* Search */
+/* Search Bar */
 .search {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 20px;
   flex-wrap: wrap;
+  gap: 10px;
 }
 
 .search input {
-  width: 100%;
-  max-width: 400px;
+  flex: 1;
+  min-width: 250px;
   height: 48px;
   padding: 10px 14px;
   border-radius: 8px;
@@ -46,7 +50,6 @@ body {
   border: 1px solid #cbd5e1;
   color: #1e293b;
   font-size: 16px;
-  margin-top: 10px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -60,13 +63,15 @@ body {
   outline: none;
 }
 
+/* Headings */
 h2 {
   color: #0ea5e9;
   font-size: 24px;
   margin-bottom: 10px;
+  word-break: break-word;
 }
 
-/* Table */
+/* Table Styles */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -83,6 +88,7 @@ th {
   border-bottom: 2px solid #cbd5e1;
   text-align: left;
   font-weight: 600;
+  word-wrap: break-word;
 }
 
 td {
@@ -90,6 +96,7 @@ td {
   border-bottom: 1px solid #e2e8f0;
   text-align: left;
   font-size: 14px;
+  word-wrap: break-word;
 }
 
 tr {
@@ -100,7 +107,7 @@ tr:hover {
   background-color: #f8fafc;
 }
 
-/* Buttons */
+/* Action Buttons */
 .btn {
   padding: 6px 12px;
   text-decoration: none;
@@ -110,6 +117,7 @@ tr:hover {
   display: inline-block;
   transition: background-color 0.3s ease;
   font-size: 14px;
+  white-space: nowrap;
 }
 
 .update {
@@ -128,13 +136,14 @@ tr:hover {
   background-color: #dc2626;
 }
 
-/* Pagination Controls */
+/* Pagination */
 .pagination {
   margin-top: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .pagination button {
@@ -164,7 +173,22 @@ tr:hover {
 
 /* Responsive Design */
 @media screen and (max-width: 768px) {
-  table, thead, tbody, th, td, tr {
+  .search {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .search input {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
     display: block;
     width: 100%;
   }
@@ -187,14 +211,33 @@ tr:hover {
     text-align: right;
     border: none;
     border-bottom: 1px solid #e5e7eb;
+    word-break: break-word;
   }
 
   td::before {
     content: attr(data-label);
     position: absolute;
     left: 10px;
+    top: 12px;
     font-weight: 600;
     text-align: left;
     color: #64748b;
+  }
+
+  .pagination {
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .btn {
+    width: 100%;
+    text-align: center;
+    margin-top: 8px;
+  }
+
+  h2 {
+    font-size: 20px;
+    text-align: center;
   }
 }

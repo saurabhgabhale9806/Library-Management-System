@@ -11,24 +11,59 @@
     <div class="header">
       <div class="logo">
         <a href="/"><img src="lib.png" alt="Logo" /></a>
-        <a href=""><h3>L<span>M</span>S</h3></a>
+        <a href="/"><h3>L<span>M</span>S</h3></a>
       </div>
       <nav class="navbar">
         <ul>
           <li><a href="#">Home</a></li>
           <li><a href="/about">About Us</a></li>
           <li><a href="#">View Books</a></li>
-          <li><a href="/login">Login</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle">Login</a>
+            <ul class="dropdown-menu">
+              <li><a href="/login">As Admin</a></li>
+              <li><a href="/UserLogin">As User</a></li>
+            </ul>
+          </li>
         </ul>
       </nav>
     </div>
-
     <div class="main-cont">
       <div class="text">
         <h1>Welcome to our Library</h1>
-       <a href="/login" class="explore-btn">Explore More</a>
+        <a href="/login" class="explore-btn">Explore More</a>
       </div>
     </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const toggle = document.querySelector('.dropdown-toggle');
+      const menu = document.querySelector('.dropdown-menu');
+
+      // Ensure dropdown is hidden on page load
+      if (menu) menu.style.display = 'none';
+
+      if (toggle && menu) {
+        toggle.addEventListener('click', (e) => {
+          e.preventDefault();
+          menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+          if (!toggle.contains(e.target) && !menu.contains(e.target)) {
+            menu.style.display = 'none';
+          }
+        });
+
+        // Close dropdown when clicking a menu item
+        menu.querySelectorAll('a').forEach(item => {
+          item.addEventListener('click', () => {
+            menu.style.display = 'none';
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>

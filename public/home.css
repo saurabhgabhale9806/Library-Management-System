@@ -54,16 +54,16 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   color: #000000;
-  
 }
-.logo h3 a{
+
+.logo h3 a {
   text-decoration: none;
   color: #000000;
 }
+
 .logo h3 span {
   color: crimson;
 }
-
 
 .navbar ul {
   display: flex;
@@ -100,6 +100,46 @@ body {
   width: 100%;
 }
 
+/* Dropdown Styles */
+.dropdown {
+  position: relative;
+}
+
+.dropdown-toggle {
+  cursor: pointer;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  list-style: none;
+  min-width: 140px;
+  z-index: 1000;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li a {
+  display: block;
+  padding: 10px 15px;
+  font-size: 0.95rem;
+  color: #1f2937;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.dropdown-menu li a:hover {
+  background-color: rgba(220, 38, 38, 0.1);
+  color: crimson;
+}
+
 .main-cont {
   margin-top: 55px;
   display: flex;
@@ -109,8 +149,8 @@ body {
 }
 
 .text {
-    background-color: rgba(0, 0, 0, 0.4);
-  color: #f1f5f9; /* subtle off-white */
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #f1f5f9;
   padding: 2rem;
   border-radius: 12px;
   width: 90%;
@@ -129,12 +169,11 @@ body {
   opacity: 0;
 }
 
-
 .explore-btn {
   display: inline-block;
   margin-top: 50px;
   padding: 0.85rem 2rem;
-  background: linear-gradient(135deg, #f43f5e, #f97316); /* rose to orange */
+  background: linear-gradient(135deg, #f43f5e, #f97316);
   color: #fff;
   text-decoration: none;
   font-size: 1.05rem;
@@ -148,7 +187,6 @@ body {
 }
 
 .explore-btn::before {
-  
   content: "";
   position: absolute;
   top: 0;
@@ -210,6 +248,18 @@ body {
 
   .navbar ul li a:hover {
     background-color: rgba(220, 38, 38, 0.1);
+  }
+
+  .dropdown-menu {
+    position: static;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 5px;
+    margin-top: 5px;
+  }
+
+  .dropdown-menu li a {
+    padding: 8px 15px;
   }
 
   .logo {
