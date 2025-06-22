@@ -1,7 +1,61 @@
 <header class="navbar">
-    <a href="/UserLogin" class="logo">📚 Users Dashboard</a>
-    <div class="profile" >👤 User</div>
-    <a href="/userLogin" class="logo">📚 Users Dashboard</a>
-    <div class="profile">👤 User</div>
-    <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
-  </header>
+  <a href="/UserLogin" class="logo">📚 Users Dashboard</a>
+  <div class="user-profile">
+    <div class="profile-picture-container">
+      <img src="/images/default-profile.png" alt="Profile Picture" class="profile-picture" id="profilePicture" onclick="document.getElementById('profileImageInput').click();">
+      <input type="file" id="profileImageInput" accept="image/*" style="display: none;" onchange="updateProfilePicture(event)">
+    </div>
+    <a href="/profile" class="profile-link">
+      <span>Profile</span>
+    </a>
+  </div>
+  <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
+</header>
+
+<script>
+function updateProfilePicture(event) {
+  const file = event.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const img = document.getElementById('profilePicture');
+      img.src = e.target.result;
+      uploadProfilePicture(file);
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function uploadProfilePicture(file) {
+  const formData = new FormData();
+  formData.append('profilePicture', file);
+
+  fetch('/api/upload-profile-picture', {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      console.log('Profile picture uploaded successfully');
+      if (data.imageUrl) {
+        document.getElementById('profilePicture').src = data.imageUrl;
+      }
+    } else {
+      console.error('Upload failed:', data.message);
+    }
+  })
+  .catch(error => console.error('Error uploading profile picture:', error));
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  fetch('/api/get-user-profile')
+    .then(response => response.json())
+    .then(data => {
+      if (data.profilePicture) {
+        document.getElementById('profilePicture').src = data.profilePicture;
+      }
+    })
+    .catch(error => console.error('Error fetching profile picture:', error));
+});
+</script>

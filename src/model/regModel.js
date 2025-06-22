@@ -401,11 +401,35 @@ exports.getLoginProfile = (username,password) => {
   return promise;
 };
 
-exports.getbeforeupdateIssue = (id) => {
+// exports.getbeforeupdateIssue = (id) => {
+//   return new Promise((res, rej) => {
+//     conn.query("SELECT * FROM books WHERE id = ?", [id], (err, result) => {
+//       if (err) rej(err);
+//       else res(result);
+//     });
+//   });
+// };
+
+
+
+exports.getbeforeupdateissueBooks = (id) => {
   return new Promise((res, rej) => {
-    conn.query("SELECT * FROM books WHERE id = ?", [id], (err, result) => {
+    conn.query("SELECT * FROM issue_details WHERE id = ?", [id], (err, result) => {
       if (err) rej(err);
       else res(result);
     });
+  });
+};
+
+exports.getafterupdateissueBooks = (status, id) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      "UPDATE issue_details SET status = ? WHERE id = ?",
+      [status, id],
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
   });
 };

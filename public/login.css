@@ -4,16 +4,17 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   box-sizing: border-box;
 }
+
 .login-container {
   /* rgba(255, 255, 255, 0.85) */
-  background-color:dark;
+  background-color: dark;
   padding: 40px 30px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 90%;
   margin: auto;
   max-width: 400px;
-  
+
 }
 
 .login-container h2 {
@@ -77,6 +78,32 @@
   text-decoration: underline;
 }
 
+.password-container {
+  position: relative;
+}
+
+.toggle-password {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 7px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 30px;
+  line-height: 1;
+  padding-top: 8px;
+}
+
+.toggle-password:hover {
+  color: #4A90E2;
+}
+
 /* Small device responsiveness */
 @media (max-width: 600px) {
   .login-container {
@@ -92,5 +119,13 @@
   .btn {
     padding: 10px;
     font-size: 15px;
+  }
+
+
+  .toggle-password {
+    right: 12px;
+    font-size: 14px;
+    width: 25px;
+    padding-top: 6px;
   }
 }

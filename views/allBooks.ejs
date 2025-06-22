@@ -11,12 +11,7 @@
 </head>
 
 <body>
-  <%- include('partials/userheader') %>
-
-    <div class="layout">
-
-      <!-- Sidebar -->
-      <%- include('partials/userSidebar', { data: data }) %>
+    <div class="layout"
 
         <!-- Main Area -->
         <div class="main-content">
@@ -60,11 +55,11 @@
                                   <strong>Status:</strong>
                                   <%= book.status %>
                     </div>
-
+<!-- 
                     <div class="button-group">
                       <a href="/deleteBook?id=<%= book.id %>" class="button button-delete">Delete</a>
                       <a href="/beforeUpdateBook?id=<%= book.id %>" class="button button-update">Update</a>
-                    </div>
+                    </div> -->
 
                   </div>
                   <% }); %>
@@ -74,19 +69,18 @@
             </div>
 
             <!-- Pagination -->
-            <div class="pagination-controls">
+            <!-- <div class="pagination-controls">
               <button id="prevPage" onclick="changePage(-1)">⟵ Previous</button>
               <span id="pageInfo"></span>
               <button id="nextPage" onclick="changePage(1)">Next ⟶</button>
-            </div>
+            </div> -->
 
           </div> <!-- end of main-scroll-area -->
         </div> <!-- end of main-content -->
     </div> <!-- end of layout -->
 
     <!-- Scripts -->
-     <script src="searchByCategory.js"></script>
-    <script src="/paginationViewBook.js"></script>
+    <!-- <script src="/paginationViewBook.js"></script> -->
     <script src="/dashboard.js"></script>
 </body>
 

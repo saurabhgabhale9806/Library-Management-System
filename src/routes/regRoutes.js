@@ -2,14 +2,14 @@ let express = require("express");
 let regCtrl = require("../controller/regCtrl.js");
 let upload = require("../middleware/upload.js");
 
-// then use it here:
-
 let router = express.Router();
 
 router.get("/", regCtrl.homePage);
 router.get("/login", regCtrl.loginPage);
 router.post("/adminLogin", regCtrl.adminLogin);
 router.get("/about", regCtrl.aboutUs);
+
+router.get("/allBook", regCtrl.allBook);
 
 //Student routes
 router.get("/student", regCtrl.getAddStudent);
@@ -45,7 +45,6 @@ router.get("/UserLogin",regCtrl.userLogin)
 router.post("/studLogin", regCtrl.studentLogin);
 
 //Search
-
 router.get("/searchByCategory",regCtrl.searchByCat);
 router.get("/searchByAuthor",regCtrl.searchByAuth);
 
@@ -73,20 +72,23 @@ router.get("/userReturnBooks", regCtrl.userReturnBook);
 router.get("/viewIssuedBooks", regCtrl.viewALLIssueBooks);
 router.get("/viewReturnedBooks", regCtrl.viewReturnedBooks);
 
-// router.get("/beforeupdateIssue",regCtrl.beforeupdateIssue);
-
-
 //user login routes
-
 router.get("/UserLogin",regCtrl.userLogin)
 router.post("/studLogin", regCtrl.studentLogin);
 
 //Search
-
 router.get("/searchByCategory",regCtrl.searchByCat);
 router.get("/searchByAuthor",regCtrl.searchByAuth);
 
 //Manage
 router.get("/userIssueBooks",regCtrl.userIssueBook);        
 
+
+// user profile
+router.get("/profile",regCtrl.userProfile)
+
+
+
+router.get("/beforeUpdateIssueBook", regCtrl.beforeUpdateIssueBook);
+router.post("/afterUpdateIssueBook", regCtrl.afterUpdateIssueBook);
 module.exports = router;

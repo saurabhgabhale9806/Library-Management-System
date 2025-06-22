@@ -290,28 +290,32 @@ exports.afterUpdateCat = async (req, res) => {
   }
 };
 
-// Show add book form with categories
 exports.addBookForm = async (req, res) => {
-  let categories = await regModels.getViewcategorie();
-  res.render("addBooks.ejs", { categories });
+  try {
+    const categories = await regModels.getViewcategorie();
+    res.render("addBooks.ejs", { categories, msg: "" });
+  } catch (err) {
+    console.error("Error loading book form:", err);
+    res.render("error.ejs");
+  }
 };
 
-// Handle book saving
-exports.addBook = (req, res) => {
-  const {
-    title,
-    author,
-    publisher,
-    isbn,
-    category,
-    total_copies,
-    available_copies,
-    status,
-  } = req.body;
-  const image = "/uploads/" + req.file.filename;
+exports.addBook = async (req, res) => {
+  try {
+    const {
+      title,
+      author,
+      publisher,
+      isbn,
+      category,
+      total_copies,
+      available_copies,
+      status,
+    } = req.body;
 
-  regModels
-    .addBook(
+    const image = "/Uploads/" + req.file.filename;
+
+    await regModels.addBook(
       title,
       author,
       publisher,
@@ -321,14 +325,14 @@ exports.addBook = (req, res) => {
       available_copies,
       status,
       image
-    )
-    .then(() => {
-      res.render("adminDashboard.ejs");
-    })
-    .catch((err) => {
-      console.error("Add Book Error:", err);
-      res.render("error.ejs");
-    });
+    );
+
+    const categories = await regModels.getViewcategorie();
+    res.render("addBooks.ejs", { categories, msg: "Book added successfully!" });
+  } catch (err) {
+    console.error("Add Book Error:", err);
+    res.render("error.ejs");
+  }
 };
 
 exports.viewBooks = async (req, res) => {
@@ -510,7 +514,6 @@ exports.searchbook = async (req, res) => {
   }
 };
 
-
 //User Page
 
 exports.userLogin = (req, res) => {
@@ -536,12 +539,40 @@ exports.studentLogin = (req, res) => {
    })
 };
 
-
 //search
 exports.searchByCat = async (req, res) => {
   try {
-    const books = await regModels.viewUserBook();
-    res.render("userViewBooks.ejs", { books }); // filename should match
+    const userId = req.session.uid;
+
+    // Check if user is logged in
+    if (!userId) {
+      return res.status(401).render("error.ejs", {
+        msg: "Unauthorized access. Please login first.",
+        code: 401
+      });
+    }
+
+    // Fetch user data
+    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+      if (err || users.length === 0) {
+        console.error("User fetch error:", err || "No user found");
+        return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+          msg: "Error fetching user.",
+          code: STATUS.INTERNAL_ERROR
+        });
+      }
+
+      // Fetch books
+      regModels.viewUserBook().then((books) => {
+        res.render("userViewBooks.ejs", { books, data: users[0] }); // Pass both books and data
+      }).catch((err) => {
+        console.error(err);
+        res.status(500).render("error.ejs", {
+          code: 500,
+          msg: "Failed to load books.",
+        });
+      });
+    });
   } catch (err) {
     console.error(err);
     res.status(500).render("error.ejs", {
@@ -553,8 +584,37 @@ exports.searchByCat = async (req, res) => {
 
 exports.searchByAuth = async (req, res) => {
   try {
-    const books = await regModels.searchAuthor();
-    res.render("userViewBooks.ejs", { books }); // filename should match
+    const userId = req.session.uid;
+
+    // Check if user is logged in
+    if (!userId) {
+      return res.status(401).render("error.ejs", {
+        msg: "Unauthorized access. Please login first.",
+        code: 401
+      });
+    }
+
+    // Fetch user data
+    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+      if (err || users.length === 0) {
+        console.error("User fetch error:", err || "No user found");
+        return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+          msg: "Error fetching user.",
+          code: STATUS.INTERNAL_ERROR
+        });
+      }
+
+      // Fetch books
+      regModels.searchAuthor().then((books) => {
+        res.render("userViewBooks.ejs", { books, data: users[0] }); // Pass both books and data
+      }).catch((err) => {
+        console.error(err);
+        res.status(500).render("error.ejs", {
+          code: 500,
+          msg: "Failed to load books.",
+        });
+      });
+    });
   } catch (err) {
     console.error(err);
     res.status(500).render("error.ejs", {
@@ -563,25 +623,6 @@ exports.searchByAuth = async (req, res) => {
     });
   }
 };
-
-
-// exports.userIssueBook = (req, res) => {
-//   let id=req.session.id;
-//     conn.query("select * from issue_details where issued_by= id;", (err, result) => {
-//         if (err) {
-
-//             console.error(err);
-//             return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-//                 msg: "Error fetching students.",
-//                 code: STATUS.INTERNAL_ERROR
-//             });
-//         }
-//         regModels.userDetail(id).then((res)=>{
-//   res.render("userSidebar.ejs", {iss: result ,data:r});
-//         });
-        
-//     });
-// }
 
 exports.userIssueBook = (req, res) => {
     const userId = req.session.uid;
@@ -634,8 +675,6 @@ exports.userIssueBook = (req, res) => {
     });
 };
 
-
-
 exports.userDashboard = (req, res) => {
     const userId = req.session.uid;
 
@@ -644,55 +683,12 @@ exports.userDashboard = (req, res) => {
             return res.status(500).render("error.ejs", {
                 msg: "User not found",
                 code: 500
-            });exports.userIssueBook = (req, res) => {
-    const userId = req.session.uid;
-
-    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
-        if (err || users.length === 0) {
-            return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-                msg: "Error fetching user.",
-                code: STATUS.INTERNAL_ERROR
             });
-        }
-
-        const sql = `
-            SELECT 
-                issue_details.id,
-                users.name AS name,
-                books.title AS title,
-                issue_details.issue_date,
-                issue_details.return_date,
-                issue_details.status
-            FROM 
-                issue_details
-            JOIN users ON issue_details.issued_by = users.id
-            JOIN books ON issue_details.book_id = books.id
-            WHERE 
-                issue_details.issued_by = ? 
-                AND issue_details.status = 'issued'
-        `;
-
-        conn.query(sql, [userId], (err, issues) => {
-            if (err) {
-                console.error("SQL error:", err); // log the actual SQL error
-                return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-                    msg: "Error fetching issued books.",
-                    code: STATUS.INTERNAL_ERROR
-                });
-            }
-
-            res.render("userIssueBook.ejs", { data: users[0], issues });
-        });
-    });
-};
-
         }
 
         res.render("userDashboard.ejs", { data: users[0] });
     });
 };
-
-
 
 exports.userReturnBook = (req, res) => {
     const userId = req.session.uid;
@@ -745,8 +741,6 @@ exports.userReturnBook = (req, res) => {
     });
 };
 
-
-
 exports.userReturnDashboard = (req, res) => {
     const userId = req.session.uid;
 
@@ -755,50 +749,105 @@ exports.userReturnDashboard = (req, res) => {
             return res.status(500).render("error.ejs", {
                 msg: "User not found",
                 code: 500
-            });exports.userIssueBook = (req, res) => {
-    const userId = req.session.uid;
-
-    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
-        if (err || users.length === 0) {
-            return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-                msg: "Error fetching user.",
-                code: STATUS.INTERNAL_ERROR
             });
-        }
-
-        const sql = `
-            SELECT 
-                issue_details.id,
-                users.name AS name,
-                books.title AS title,
-                issue_details.issue_date,
-                issue_details.return_date,
-                issue_details.status
-            FROM 
-                issue_details
-            JOIN users ON issue_details.issued_by = users.id
-            JOIN books ON issue_details.book_id = books.id
-            WHERE 
-                issue_details.issued_by = ? 
-                AND issue_details.status = 'returned'
-        `;
-
-        conn.query(sql, [userId], (err, issues) => {
-            if (err) {
-                console.error("SQL error:", err); // log the actual SQL error
-                return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-                    msg: "Error fetching issued books.",
-                    code: STATUS.INTERNAL_ERROR
-                });
-            }
-
-            res.render("userIssueBook.ejs", { data: users[0], issues });
-        });
-    });
-};
-
         }
 
         res.render("userDashboard.ejs", { data: users[0] });
     });
+};
+
+// user profile
+
+exports.userProfile = (req, res) => {
+    const userId = req.session.uid;
+
+    // Check if userId is defined (i.e., user is logged in)
+    if (!userId) {
+        return res.status(401).render("error.ejs", {
+            msg: "Please log in to view your profile",
+            code: 401
+        });
+    }
+
+    console.log("User ID:", userId); // Debug log
+
+    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+        console.log("User ID in query:", userId); // Debug log
+        if (err) {
+            console.error("Database error:", err); // Log the actual error
+            return res.status(500).render("error.ejs", {
+                msg: "Database error",
+                code: 500
+            });
+        }
+
+        if (users.length === 0) {
+            return res.status(404).render("error.ejs", {
+                msg: "User not found",
+                code: 404
+            });
+        }
+
+        res.render("userProfile.ejs", { user: users[0] });
+    });
+};
+
+
+//update issued books
+
+exports.beforeUpdateIssueBook = async (req, res) => {
+  const idParam = req.query.id;
+
+  if (!idParam) {
+    return res.status(400).render("error.ejs", {
+      code: 400,
+      msg: "Book ID not provided.",
+    });
+  }
+
+  try {
+    const id = parseInt(idParam.trim());
+    const Book = await regModels.getbeforeupdateissueBooks(id);
+
+    if (Book.length === 0) {
+      return res.status(404).render("error.ejs", {
+        code: 404,
+        msg: "Book not found.",
+      });
+    }
+
+    const categories = await regModels.getAllCategories();
+
+    res.render("updateIssueBooks.ejs", { book: Book[0], categories });
+  } catch (err) {
+    res.status(500).render("error.ejs", {
+      code: 500,
+      msg: err.message || "Internal Server Error",
+    });
+  }
+};
+exports.afterUpdateIssueBook = (req, res) => {
+  const { status, id } = req.body;
+
+  regModels.getafterupdateissueBooks(status, id)
+    .then(() => {
+      res.redirect("/viewIssuedBooks");
+    })
+    .catch((err) => {
+      console.error("Update error:", err);
+      res.status(500).send("Error updating status");
+    });
+};
+
+exports.allBook = async (req, res) => {
+  try {
+    const books = await regModels.viewBooks();
+    res.render("allBooks.ejs", { books }); // filename should match
+  } catch (err) {
+    console.error(err);
+    res.status(500).render("error.ejs", {
+      code: 500,
+      msg: "Failed to load books.",
+    });
+  }
 };

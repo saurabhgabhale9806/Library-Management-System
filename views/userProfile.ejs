@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="/userDashboard.css" />
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    
+</head>
+<body>
+    <%- include('partials/userHeader') %>
+    <div class="layout">
+        <%- include('partials/userSidebar') %>
+        <main class="main-content">
+            <h1>User Profile</h1>
+            <div class="profile-card">
+                <div class="flex flex-col items-center mb-6">
+                    <div class="profile-avatar">
+                        <%= user.name ? user.name.charAt(0).toUpperCase() : 'U' %>
+                    </div>
+                    <h2 class="text-xl font-semibold text-gray-800 mt-3"><%= user.name || 'User' %></h2>
+                    <p class="text-xs text-gray-500"><%= user.role || 'Role not specified' %></p>
+                </div>
+                <div class="profile-field">
+                    <i class="fas fa-user"></i>
+                    <span class="profile-field-label">Name</span>
+                    <span class="profile-field-value"><%= user.name || 'Not provided' %></span>
+                </div>
+                <div class="profile-field">
+                    <i class="fas fa-envelope"></i>
+                    <span class="profile-field-label">Email</span>
+                    <span class="profile-field-value"><%= user.email || 'Not provided' %></span>
+                </div>
+                <div class="profile-field">
+                    <i class="fas fa-briefcase"></i>
+                    <span class="profile-field-label">Role</span>
+                    <span class="profile-field-value"><%= user.role || 'Not provided' %></span>
+                </div>
+                <div class="profile-field">
+                    <i class="fas fa-phone"></i>
+                    <span class="profile-field-label">Phone</span>
+                    <span class="profile-field-value"><%= user.phone || 'Not provided' %></span>
+                </div>
+                <div class="profile-field">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span class="profile-field-label">Location</span>
+                    <span class="profile-field-value"><%= user.location || 'Not provided' %></span>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('active');
+        }
+        function toggleDropdown(element) {
+            element.parentElement.classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
