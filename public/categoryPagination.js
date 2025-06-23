@@ -8,9 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderPage(page) {
     const start = (page - 1) * rowsPerPage;
     const end = start + rowsPerPage;
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
     rows.forEach((row, index) => {
-      row.style.display = (index >= start && index < end) ? "table-row" : "none";
+      row.style.display =
+        index >= start && index < end
+          ? isMobile
+            ? "block"
+            : "table-row"
+          : "none";
     });
 
     const pageInfo = document.getElementById("pageInfo");
@@ -27,6 +33,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (newPage >= 1 && newPage <= totalPages) {
       currentPage = newPage;
       renderPage(currentPage);
+    }
+  };
+
+  // Re-render on window resize to handle display changes
+  window.addEventListener("resize", () => {
+    renderPage(currentPage);
+  });
+
+  // Expose renderPage and rows for search functionality
+  window.pagination = {
+    renderPage,
+    rows,
+    rowsPerPage,
+    setTotalPages: (newTotal) => {
+      totalPages = newTotal;
     }
   };
 

@@ -1,69 +1,218 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Library Management System</title>
-  <link rel="stylesheet" href="home.css" />
+  <link rel="icon" href="LMS.jpg" type="image/x-icon" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" /> 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/home.css" />
+  <link rel="stylesheet" href="/about.css" />
 </head>
+
 <body>
-  <div class="container">
-    <div class="header">
+  <div class="header">
+    <div class="container">
       <div class="logo">
-        <a href="/"><img src="lib.png" alt="Logo" /></a>
-        <a href="/"><h3>L<span>M</span>S</h3></a>
+        <img src="LMS.jpg" alt="Library Logo" width="40" height="40" />
+        <h3>Library<span>Hub</span></h3>
       </div>
-      <nav class="navbar">
+      <button class="menu-toggle" id="menu-toggle" aria-label="Toggle Menu">
+        <i class="fas fa-bars"></i>
+      </button>
+      <nav class="navbar" id="navbar">
         <ul>
           <li><a href="#">Home</a></li>
           <li><a href="/about">About Us</a></li>
-          <li><a href="#">View Books</a></li>
+          <li><a href="/allBook">View Books</a></li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle">Login</a>
-            <ul class="dropdown-menu">
-              <li><a href="/login">As Admin</a></li>
-              <li><a href="/userLogin">As User</a></li>
+            <a href="#" class="dropdown-toggle" id="loginToggle">Login As</a>
+            <ul class="dropdown-menu" id="loginDropdown">
+              <li><a href="/login">Admin</a></li>
+              <li><a href="/userLogin">User</a></li>
             </ul>
           </li>
         </ul>
       </nav>
     </div>
-    <div class="main-cont">
-      <div class="text">
-        <h1>Welcome to our Library</h1>
-        <a href="/login" class="explore-btn">Explore More</a>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-text">
+     <h1>Welcome to LibraPro – Smart Library Management for the Digital Age</h1>
+      <p>
+        Effortlessly manage books, users, and lending services in one place.
+      </p>
+      <a href="/login" class="explore-btn">Explore More</a>
+    </div>
+  </section>
+
+  <!-- Slider Section -->
+  <section class="slider-container">
+    <div class="container">
+      <h2>Popular Books</h2>
+      <div class="slider">
+        <div class="slides">
+          <div class="book-card">
+            <img src="book1.jpg" alt="Book 1" />
+            <div class="book-card-content">
+              <h3>Dune</h3>
+              <p>Frank Herbert</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="Book2.jpg" alt="Book 2" />
+            <div class="book-card-content">
+              <h3>The Hobbit</h3>
+              <p>J.R.R. Tolkien</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="book3.jpg" alt="Book 3" />
+            <div class="book-card-content">
+              <h3>The Big Sleep</h3>
+              <p>Raymond Chandler</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="book4.jpg" alt="Book 4" />
+            <div class="book-card-content">
+              <h3>Sapiens: A Brief History of Humankind</h3>
+              <p>Yuval Noah Harari</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="book5.jpg" alt="Book 5" />
+            <div class="book-card-content">
+              <h3>Outlander</h3>
+              <p>Diana Gabaldon</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="book6.jpg" alt="Book 6" />
+            <div class="book-card-content">
+              <h3>Neuromancer</h3>
+              <p>William Gibson</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="book7.jpg" alt="Book 7" />
+            <div class="book-card-content">
+              <h3>A Game of Thrones</h3>
+              <p>George R.R. Martin</p>
+            </div>
+          </div>
+          <div class="book-card">
+            <img src="book8.jpg" alt="Book 8" />
+            <div class="book-card-content">
+              <h3>The Name of the Wind</h3>
+              <p>Patrick Rothfuss</p>
+            </div>
+          </div>
+        </div>
+        <div class="slider-controls">
+          <button class="prev-btn">
+            <i class="fas fa-chevron-left"></i>
+          </button>
+          <button class="next-btn">
+            <i class="fas fa-chevron-right"></i>
+          </button>
+        </div>
+        <div class="slider-dots"></div>
       </div>
     </div>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const toggle = document.querySelector('.dropdown-toggle');
-      const menu = document.querySelector('.dropdown-menu');
+  </section>
+  <!-- Services Section -->
+  <section class="services">
+    <div class="container">
+      <h2>Our Services</h2>
+      <div class="services-grid">
+        <div class="service-card">
+          <i class="fas fa-book"></i>
+          <h3>Book Management</h3>
+          <p>
+            Easily add, update, or remove books from the system with just a
+            few clicks.
+          </p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-user-graduate"></i>
+          <h3>User Accounts</h3>
+          <p>
+            Manage student and faculty user accounts and lending privileges.
+          </p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-handshake"></i>
+          <h3>Issue & Return</h3>
+          <p>Track book lending history and manage due dates with ease.</p>
+        </div>
+        <div class="service-card">
+          <i class="fas fa-chart-line"></i>
+          <h3>Reports</h3>
+          <p>Generate daily, weekly, and monthly reports on library usage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <%- include('aboutUs') %>
+    <!-- Footer Section -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-column">
+            <div class="logo">
+              <img src="LMS.jpg" alt="Library Logo" width="40" height="40" />
+              <h3>Library<span>Hub</span></h3>
+            </div>
+            <p>Empowering knowledge through seamless library management.</p>
+          </div>
+          <div class="footer-column">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#">Home</a></li>
+              <li><a href="/about">About Us</a></li>
+              <li><a href="/allBook">View Books</a></li>
+              <li><a href="/contact">Contact</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Contact Us</h4>
+            <p>
+              <i class="fas fa-map-marker-alt"></i> 123 Library Lane, Book City
+            </p>
+            <p><i class="fas fa-envelope"></i> support@libraryhub.com</p>
+            <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+          </div>
+          <div class="footer-column">
+            <h4>Follow Us</h4>
+            <div class="social-icons">
+              <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+              <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+              <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+              <a href alten="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            © <%= new Date().getFullYear() %> LibraryHub. All rights reserved.
+          </p>
+        </div>
+      </div>
+    </footer>
 
-      // Ensure dropdown is hidden on page load
-      if (menu) menu.style.display = 'none';
-
-      if (toggle && menu) {
-        toggle.addEventListener('click', (e) => {
-          e.preventDefault();
-          menu.style.display = menu.style.display === 'none' ? 'block' : 'none';
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-          if (!toggle.contains(e.target) && !menu.contains(e.target)) {
-            menu.style.display = 'none';
-          }
-        });
-
-        // Close dropdown when clicking a menu item
-        menu.querySelectorAll('a').forEach(item => {
-          item.addEventListener('click', () => {
-            menu.style.display = 'none';
-          });
-        });
-      }
-    });
-  </script>
+    <!-- JavaScript -->
+    <script src="slider.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+    <script src="/home.js"></script>
 </body>
+
 </html>

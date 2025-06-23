@@ -1,5 +1,6 @@
 <aside class="sidebar" id="sidebar">
   <nav>
+    <!-- Search Dropdown -->
     <div class="dropdown">
       <h3 class="dropdown-toggle" onclick="toggleDropdown(this)">Search ▼</h3>
       <div class="dropdown-menu">
@@ -14,14 +15,15 @@
       </div>
     </div>
 
+    <!-- My Books Dropdown -->
     <div class="dropdown">
-      <h3 class="dropdown-toggle" onclick="toggleDropdown(this)">Manage My Books ▼</h3>
+      <h3 class="dropdown-toggle" onclick="toggleDropdown(this)">My Books ▼</h3>
       <div class="dropdown-menu">
         <a href="/userIssueBooks" class="dropdown-card">
           <h4>📋 Issued Books</h4>
           <p>View books currently issued to you.</p>
         </a>
-        <a href="/books/returned" class="dropdown-card">
+        <a href="/userReturnBooks" class="dropdown-card">
           <h4>📥 Returned Books</h4>
           <p>See the books you’ve returned.</p>
         </a>

@@ -2,68 +2,81 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Add Book</title>
   <link rel="stylesheet" href="/admindashboard.css" />
   <link rel="stylesheet" href="/addBook.css" />
+  
 </head>
 <body>
-  <!-- Include Header -->
   <%- include('partials/header') %>
 
   <div class="layout">
-    <!-- Include Sidebar -->
     <%- include('partials/sidebar') %>
 
     <main class="main-content add-book-page">
       <div class="form-card">
         <h2>➤ Add Book</h2>
+        <% if (typeof error !== 'undefined' && error) { %>
+          <div class="message" style="color: #dc2626; background: #fee2e2; border-color: #fecaca;">
+            <%= error %>
+          </div>
+        <% } %>
+        <% if (typeof msg !== 'undefined' && msg) { %>
+          <div class="message">
+            <%= msg %>
+          </div>
+        <% } %>
         <form action="/addBook" method="POST" enctype="multipart/form-data">
-
           <div class="form-group">
             <label for="title">📖 Book Title</label>
-            <input type="text" name="title" id="title" placeholder="Enter Book Title" required />
+            <input type="text" name="title" id="title" placeholder="Enter Book Title" value="<%= typeof title !== 'undefined' ? title : '' %>" required />
           </div>
 
           <div class="form-group">
             <label for="author">✍️ Author</label>
-            <input type="text" name="author" id="author" placeholder="Enter Author Name" required />
+            <input type="text" name="author" id="author" placeholder="Enter Author Name" value="<%= typeof author !== 'undefined' ? author : '' %>" required />
           </div>
 
           <div class="form-group">
             <label for="publisher">🏛️ Publisher</label>
-            <input type="text" name="publisher" id="publisher" placeholder="Enter Publisher Name" required />
+            <input type="text" name="publisher" id="publisher" placeholder="Enter Publisher Name" value="<%= typeof publisher !== 'undefined' ? publisher : '' %>" required />
           </div>
 
           <div class="form-group">
             <label for="isbn">🆔 ISBN</label>
-            <input type="text" name="isbn" id="isbn" placeholder="Enter ISBN Number" required />
+            <input type="text" name="isbn" id="isbn" placeholder="Enter ISBN Number" value="<%= typeof isbn !== 'undefined' ? isbn : '' %>" required />
           </div>
 
           <div class="form-group">
             <label for="category">🗂️ Category</label>
             <select name="category" id="category" required>
               <option value="">-- Select Category --</option>
-              <% categories.forEach(function(cat) { %>
-                <option value="<%= cat.name %>"><%= cat.name %></option>
-              <% }); %>
+              <% if (typeof categories !== 'undefined' && Array.isArray(categories)) { %>
+                <% categories.forEach(function(cat) { %>
+                  <option value="<%= cat.name %>" <%= (typeof selectedCategory !== 'undefined' && selectedCategory === cat.name) ? 'selected' : '' %>>
+                    <%= cat.name %>
+                  </option>
+                <% }); %>
+              <% } %>
             </select>
           </div>
 
           <div class="form-group">
             <label for="total_copies">🔢 Total Copies</label>
-            <input type="number" name="total_copies" id="total_copies" placeholder="Total Copies" required />
+            <input type="number" name="total_copies" id="total_copies" placeholder="Total Copies" value="<%= typeof total_copies !== 'undefined' ? total_copies : '' %>" required />
           </div>
 
           <div class="form-group">
             <label for="available_copies">📦 Available Copies</label>
-            <input type="number" name="available_copies" id="available_copies" placeholder="Available Copies" required />
+            <input type="number" name="available_copies" id="available_copies" placeholder="Available Copies" value="<%= typeof available_copies !== 'undefined' ? available_copies : '' %>" required />
           </div>
 
           <div class="form-group">
             <label for="status">📶 Status</label>
             <select name="status" id="status" required>
-              <option value="Available">Available</option>
-              <option value="Unavailable">Unavailable</option>
+              <option value="Available" <%= (typeof status !== 'undefined' && status === 'Available') ? 'selected' : '' %>>Available</option>
+              <option value="Unavailable" <%= (typeof status !== 'undefined' && status === 'Unavailable') ? 'selected' : '' %>>Unavailable</option>
             </select>
           </div>
 
@@ -73,9 +86,8 @@
           </div>
 
           <div class="form-group full-width">
-            <button type="submit"> Add Book</button>
+            <button type="submit">Add Book</button>
           </div>
-          <%= msg %>
         </form>
       </div>
     </main>
@@ -83,4 +95,4 @@
 
   <script src="/dashboard.js"></script>
 </body>
-</html>
+</html> 

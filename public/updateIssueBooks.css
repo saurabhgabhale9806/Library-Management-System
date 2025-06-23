@@ -83,8 +83,8 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* Form labels and inputs */
-form label {
+/* Form labels and select */
+.update-form label {
   display: block;
   margin-bottom: 0.5rem;
   color: #334155;
@@ -94,7 +94,7 @@ form label {
   letter-spacing: 0.05em;
 }
 
-form input[type="text"] {
+.update-form select {
   width: 100%;
   padding: 0.65rem;
   margin-bottom: 1.2rem;
@@ -106,11 +106,7 @@ form input[type="text"] {
   transition: border-color 0.3s ease, background-color 0.3s ease;
 }
 
-form input[type="text"]::placeholder {
-  color: #94a3b8;
-}
-
-form input[type="text"]:focus {
+.update-form select:focus {
   border-color: #3b82f6;
   background-color: #f1f5f9;
   outline: none;
@@ -118,7 +114,7 @@ form input[type="text"]:focus {
 }
 
 /* Submit Button */
-form button {
+.update-form .btn {
   width: 100%;
   padding: 0.75rem;
   background: linear-gradient(135deg, #3b82f6, #2563eb);
@@ -134,26 +130,14 @@ form button {
   letter-spacing: 0.05em;
 }
 
-form button:hover {
+.update-form .btn:hover {
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
   transform: translateY(-1px);
 }
 
-form button:active {
+.update-form .btn:active {
   transform: translateY(0);
   box-shadow: 0 2px 8px rgba(59, 130, 246, 0.2);
-}
-
-/* Message */
-.message {
-  margin-top: 1rem;
-  text-align: center;
-  font-size: 0.9rem;
-  color: #10b981;
-  padding: 8px 14px;
-  background: #d1fae5;
-  border: 1px solid #6ee7b7;
-  border-radius: 6px;
 }
 
 /* Responsive Design */
@@ -181,22 +165,17 @@ form button:active {
     font-size: 1.25rem;
   }
 
-  form label {
+  .update-form label {
     font-size: 0.85rem;
   }
 
-  form input[type="text"] {
+  .update-form select {
     font-size: 0.95rem;
     padding: 0.6rem;
   }
 
-  form button {
+  .update-form .btn {
     font-size: 0.95rem;
     padding: 0.7rem;
-  }
-
-  .message {
-    font-size: 0.85rem;
-    padding: 6px 10px;
   }
 }

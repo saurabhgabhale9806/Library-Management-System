@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Update Book Status</title>
+  <link href="/updateIssueBooks.css" rel="stylesheet">
+  <link rel="stylesheet" href="/admindashboard.css">
+</head>
+<body>
+  <!-- Include Header -->
+  <%- include('partials/header') %>
+
+  <div class="layout">
+    <!-- Include Sidebar -->
+    <%- include('partials/sidebar') %>
+
+    <main class="main-content">
+      <div class="form-card">
+        <h2><span>➤</span> Update Book Status</h2>
+        <form action="/afterUpdateIssueBook" method="POST" class="update-form">
+          <input type="hidden" name="id" value="<%= book.id %>">
+
+          <label for="status">Status</label>
+          <select id="status" name="status" required>
+            <option value="">-- Select Status --</option>
+            <option value="issued" <%= book.status === 'issued' ? 'selected' : '' %>>Issued</option>
+            <option value="returned" <%= book.status === 'returned' ? 'selected' : '' %>>Returned</option>
+            <option value="overdue" <%= book.status === 'overdue' ? 'selected' : '' %>>Overdue</option>
+          </select>
+
+          <button type="submit" class="btn" onclick="updateStatus();">Update Status</button>
+        </form>
+      </div>
+    </main>
+  </div>
+  <script src="/updateIssueBooks.js"></script>
+  <script src="/dashboard.js"></script>
+</body>
+</html>

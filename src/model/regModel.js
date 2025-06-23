@@ -1,3 +1,4 @@
+const { rejects } = require("assert");
 let conn = require("../config/db.js");
 
 exports.addStudent = (name, email, password) => {
@@ -213,6 +214,8 @@ exports.viewBooks = () => {
   });
 };
 
+
+
 exports.deleteBooks = (id) => {
   return new Promise((resolve, reject) => {
     conn.query("DELETE FROM books WHERE id = ?", [id], (err, result) => {
@@ -300,6 +303,62 @@ exports.searchbook = (category) => {
 };
 
 
+exports.viewUserBook = () => {
+  return new Promise((res, rej) => {
+    conn.query("Select * from books", (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+};
+
+exports.searchAuthor = () => {
+  return new Promise((res, rej) => {
+    conn.query("Select * from books", (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+};
+
+exports.getLoginProfile = (username,password) => {
+  let promise = new Promise((res, rej) => {
+    console.log(username);
+    console.log(password);
+    conn.query("select * from users where email = ? and password = ?", [username,password], (err, result) => {
+      if (err) {
+        rej(err);
+      } else {
+        console.log(result);
+        res(result);
+      }
+    });
+  });
+  return promise;
+};
+
+
+exports.userDetail = (id) => {
+    return new Promise((res, rej) => {
+        conn.query("SELECT * FROM users WHERE id = ?", [id], (err, result) => {
+            if (err) {
+                console.log(err);
+                rej(err);
+            } else {
+                res(result);
+            }
+        });
+    });
+};
+
 //user Models
 
 exports.viewUserBook = () => {
@@ -344,11 +403,35 @@ exports.getLoginProfile = (username,password) => {
   return promise;
 };
 
-exports.getbeforeupdateIssue = (id) => {
+// exports.getbeforeupdateIssue = (id) => {
+//   return new Promise((res, rej) => {
+//     conn.query("SELECT * FROM books WHERE id = ?", [id], (err, result) => {
+//       if (err) rej(err);
+//       else res(result);
+//     });
+//   });
+// };
+
+
+
+exports.getbeforeupdateissueBooks = (id) => {
   return new Promise((res, rej) => {
-    conn.query("SELECT * FROM books WHERE id = ?", [id], (err, result) => {
+    conn.query("SELECT * FROM issue_details WHERE id = ?", [id], (err, result) => {
       if (err) rej(err);
       else res(result);
     });
+  });
+};
+
+exports.getafterupdateissueBooks = (status, id) => {
+  return new Promise((resolve, reject) => {
+    conn.query(
+      "UPDATE issue_details SET status = ? WHERE id = ?",
+      [status, id],
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      }
+    );
   });
 };

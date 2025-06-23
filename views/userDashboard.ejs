@@ -7,17 +7,12 @@
   <link rel="stylesheet" href="/userDashboard.css" />
 </head>
 <body>
-
-  <!-- Include Header -->
   <%- include('partials/userHeader') %>
 
-  <!-- Layout with Sidebar and Main Content -->
   <div class="layout">
+    <% const safeData = typeof data !== 'undefined' ? data : {}; %>
+    <%- include('partials/userSidebar', { data: safeData }) %>
 
-    <!-- Include Sidebar -->
-    <%- include('partials/userSidebar') %>
-
-    <!-- Main Content -->
     <main class="main-content">
       <div class="card-section">
         <div class="card category">
@@ -25,25 +20,21 @@
           <p>Active Categories</p>
         </div>
         <div class="card book">
-          <h2>560 Books</h2>
+          <h2>1060 Books</h2>
           <p>Available Books</p>
         </div>
       </div>
     </main>
   </div>
 
-  <!-- JS for Sidebar and Dropdown -->
   <script>
     function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('active');
+      document.getElementById('sidebar').classList.toggle('active');
     }
 
     function toggleDropdown(element) {
-      const parent = element.parentElement;
-      parent.classList.toggle('open');
+      element.parentElement.classList.toggle('open');
     }
   </script>
-
 </body>
 </html>
