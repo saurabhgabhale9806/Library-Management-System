@@ -214,6 +214,8 @@ exports.viewBooks = () => {
   });
 };
 
+
+
 exports.deleteBooks = (id) => {
   return new Promise((resolve, reject) => {
     conn.query("DELETE FROM books WHERE id = ?", [id], (err, result) => {

@@ -1,27 +1,5 @@
 
-// Mobile menu toggle
-const menuToggle = document.querySelector('.menu-toggle');
-const navbar = document.querySelector('.navbar');
-menuToggle.addEventListener('click', () => {
-  navbar.classList.toggle('active');
-});
 
-// Login dropdown toggle
-const loginToggle = document.getElementById("loginToggle");
-const loginDropdown = document.getElementById("loginDropdown");
-
-loginToggle.addEventListener("click", function (e) {
-  e.preventDefault();
-  const isVisible = loginDropdown.style.display === "block";
-  loginDropdown.style.display = isVisible ? "none" : "block";
-});
-
-// Close dropdown if clicked outside
-window.addEventListener("click", function (e) {
-  if (!loginToggle.contains(e.target) && !loginDropdown.contains(e.target)) {
-    loginDropdown.style.display = "none";
-  }
-});
 
 // Slider JavaScript
 const slides = document.querySelector('.slides');

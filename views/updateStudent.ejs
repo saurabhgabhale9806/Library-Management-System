@@ -1,50 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Update Student</title>
+  <link rel="stylesheet" href="/admindashboard.css" />
   <link rel="stylesheet" href="/addStudent.css" />
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-
 <body>
-  <div class="container">
-    <div class="form-card">
-      <h2>➤ Update Student</h2>
+  <!-- Header Partial -->
+  <%- include('partials/header') %>
 
-      <% if (msg) { %>
-        <p style="color: red; font-weight: bold;"><%= msg %></p>
-      <% } %>
+  <div class="layout">
+    <!-- Sidebar Partial-->
+    <%- include('partials/sidebar') %>
 
-      <form action="/update" method="POST" onsubmit="return validatePasswords()">
-        <!-- Hidden input to store user ID -->
-        <input type="hidden" name="id" value="<%= user?.id %>" />
+    <main class="main-content">
+      <div class="form-container">
+        <div class="form-card">
+          <h2>➤ Update Student</h2>
+            <form id="studentForm" action="/update" method="POST" onsubmit="return validatePasswords()">
+            <!-- Hidden input to store user ID -->
+            <input type="hidden" name="id" value="<%= user?.id %>" />
 
-        <div class="form-group">
-          <label for="name">Full Name</label>
-          <input type="text" name="name" id="name" value="<%= user?.name || '' %>" required />
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input type="text" name="name" id="name" value="<%= user?.name || '' %>" required />
+              <span id="nameError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" name="email" id="email" value="<%= user?.email || '' %>" required />
+              <span id="emailError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" name="password" id="password" placeholder="Enter New Password" required />
+              <span id="passwordError" class="error"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="confirm">Confirm Password</label>
+              <input type="password" name="confirm" id="confirm" placeholder="Confirm Password" required />
+              <span id="confirmError" class="error"></span>
+            </div>
+
+            <div class="form-group full-width">
+              <input type="submit" class="btn-submit" value="UPDATE STUDENT" />
+            </div>
+          </form>
+            <% if (typeof msg !== 'undefined') { %>
+            <p class="message"><%= msg %></p>
+          <% } %>
         </div>
-
-        <div class="form-group">
-          <label for="email">Email Address</label>
-          <input type="email" name="email" id="email" value="<%= user?.email || '' %>" required />
-        </div>
-
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" name="password" id="password" placeholder="Enter New Password" required />
-        </div>
-
-        <div class="form-group">
-          <label for="confirm">Confirm Password</label>
-          <input type="password" name="confirm" id="confirm" placeholder="Confirm Password" required />
-        </div>
-
-        <input type="submit" class="btn-submit" value="UPDATE STUDENT" />
-      </form>
-    </div>
+      </div>
+    </main>
   </div>
 
+  <script src="/dashboard.js"></script>
   <script src="/validations.js"></script>
-</body>
-</html>
+</body></html>

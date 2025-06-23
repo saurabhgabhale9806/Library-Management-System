@@ -1,27 +1,24 @@
 let currentPage = 1;
-let rowsPerPage;
+const defaultRowsPerPage = 5;
 let allRows = [];
-
-function getRowsPerPage() {
-  return window.innerWidth <= 768 ? allRows.length : 5;
-}
 
 document.addEventListener("DOMContentLoaded", () => {
   allRows = Array.from(document.querySelectorAll(".student-row"));
-  rowsPerPage = getRowsPerPage();
-  let totalPages = Math.ceil(allRows.length / rowsPerPage);
+  const totalPages = Math.ceil(allRows.length / defaultRowsPerPage);
 
   function renderPage(page) {
-    rowsPerPage = getRowsPerPage();
-    totalPages = Math.ceil(allRows.length / rowsPerPage);
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    const rowsPerPage = isMobile ? allRows.length : defaultRowsPerPage;
+    const calculatedTotalPages = Math.ceil(allRows.length / rowsPerPage);
 
-    if (window.innerWidth <= 768) {
-      // Mobile view: Show all rows, no pagination
+    if (isMobile) {
+      // Mobile view: Show all rows, hide pagination
       allRows.forEach((row) => {
         row.style.display = "block";
       });
       document.querySelector(".pagination").style.display = "none";
     } else {
+      // Desktop view: Paginate rows
       const start = (page - 1) * rowsPerPage;
       const end = start + rowsPerPage;
 
@@ -30,36 +27,52 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       document.querySelector(".pagination").style.display = "flex";
-      document.getElementById("pageInfo").textContent = `Page ${currentPage} of ${totalPages}`;
+      const pageInfo = document.getElementById("pageInfo");
+      if (pageInfo) {
+        pageInfo.textContent = `Page ${currentPage} of ${calculatedTotalPages || 1}`;
+      }
+
       document.getElementById("prevPage").disabled = currentPage === 1;
-      document.getElementById("nextPage").disabled = currentPage === totalPages;
+      document.getElementById("nextPage").disabled = currentPage === calculatedTotalPages;
     }
   }
 
   window.changePage = function (direction) {
-    const newPage = currentPage + direction;
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if (isMobile) return; // No pagination in mobile view
+
+    const rowsPerPage = defaultRowsPerPage;
     const maxPage = Math.ceil(allRows.length / rowsPerPage);
+    const newPage = currentPage + direction;
+
     if (newPage >= 1 && newPage <= maxPage) {
       currentPage = newPage;
       renderPage(currentPage);
     }
   };
 
+  // Re-render on window resize to handle display changes
   window.addEventListener("resize", () => {
-    const previousRowsPerPage = rowsPerPage;
-    rowsPerPage = getRowsPerPage();
+    const wasMobile = window.matchMedia("(max-width: 768px)").matches;
+    renderPage(currentPage);
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-    // Reset page to 1 only if mode changed (mobile <-> desktop)
-    const wasMobile = previousRowsPerPage === allRows.length;
-    const isMobile = rowsPerPage === allRows.length;
-
+    // Reset to page 1 when switching between mobile and desktop
     if (wasMobile !== isMobile) {
       currentPage = 1;
+      renderPage(currentPage);
     }
-
-    renderPage(currentPage);
   });
+
+  // Expose pagination utilities for external use (e.g., search functionality)
+  window.pagination = {
+    renderPage,
+    rows: allRows,
+    rowsPerPage: defaultRowsPerPage,
+    setTotalPages: (newTotal) => {
+      totalPages = newTotal;
+    }
+  };
 
   renderPage(currentPage);
 });
-  

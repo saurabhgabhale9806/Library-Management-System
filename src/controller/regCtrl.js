@@ -291,31 +291,26 @@ exports.afterUpdateCat = async (req, res) => {
 };
 
 exports.addBookForm = async (req, res) => {
-  try {
-    const categories = await regModels.getViewcategorie();
-    res.render("addBooks.ejs", { categories, msg: "" });
-  } catch (err) {
-    console.error("Error loading book form:", err);
-    res.render("error.ejs");
-  }
+  let categories = await regModels.getViewcategorie();
+  res.render("addBooks.ejs", { categories ,msg:""});
 };
 
-exports.addBook = async (req, res) => {
-  try {
-    const {
-      title,
-      author,
-      publisher,
-      isbn,
-      category,
-      total_copies,
-      available_copies,
-      status,
-    } = req.body;
+// Handle book saving
+exports.addBook = (req, res) => {
+  const {
+    title,
+    author,
+    publisher,
+    isbn,
+    category,
+    total_copies,
+    available_copies,
+    status,
+  } = req.body;
+  const image = "/uploads/" + req.file.filename;
 
-    const image = "/Uploads/" + req.file.filename;
-
-    await regModels.addBook(
+  regModels
+    .addBook(
       title,
       author,
       publisher,
@@ -325,14 +320,14 @@ exports.addBook = async (req, res) => {
       available_copies,
       status,
       image
-    );
-
-    const categories = await regModels.getViewcategorie();
-    res.render("addBooks.ejs", { categories, msg: "Book added successfully!" });
-  } catch (err) {
-    console.error("Add Book Error:", err);
-    res.render("error.ejs");
-  }
+    )
+    .then(() => {
+      res.render("adminDashboard.ejs");
+    })
+    .catch((err) => {
+      console.error("Add Book Error:", err);
+      res.render("error.ejs");
+    });
 };
 
 exports.viewBooks = async (req, res) => {
@@ -347,6 +342,7 @@ exports.viewBooks = async (req, res) => {
     });
   }
 };
+
 
 exports.deleteBooks = async (req, res) => {
   try {

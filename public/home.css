@@ -162,7 +162,7 @@ body {
 }
 
 .hero {
-  background: linear-gradient(135deg, rgba(37, 100, 235, 0.151), rgba(59, 130, 246, 0.3)), url('l.jpg');
+  background: linear-gradient(135deg, rgba(85, 59, 181, 0.139), rgba(85, 59, 181, 0.228)), url('l.jpg');
   background-size: cover;
   background-position: center;
   min-height: 600px;
@@ -468,8 +468,8 @@ body {
   list-style: none;
 }
 
-.footer-column ul li {
-  margin-bottom: 8px;
+.footer-column ul li{
+  sincerity-bottom: 8px;
 }
 
 .footer-column ul li a {
