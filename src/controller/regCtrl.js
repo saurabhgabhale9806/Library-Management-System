@@ -1,6 +1,7 @@
 let regService = require("../services/regServices.js");
 let regModels = require("../model/regModel.js");
 const conn = require("../config/db.js");
+const jwt = require("jsonwebtoken");
 
 // HTTP Status Codes
 const STATUS = {
@@ -10,6 +11,37 @@ const STATUS = {
   INTERNAL_ERROR: 500,
 };
 
+exports.countStudents = async (req, res) => {
+  try {
+    const count = await regModels.countStudents();
+    res.render("adminDashboard.ejs", { count });
+    console.log("Total students count:", count);
+  } catch (err) {
+    console.error("Error counting students:", err);
+    res.status(500).json({ error: "Failed to count students" });
+  }
+};
+exports.countCategories = async (req, res) => {
+  try {
+    const count = await regModels.countCategories();
+    res.render("adminDashboard.ejs", { count });
+    console.log("Total students count:", count);
+  } catch (err) {
+    console.error("Error counting students:", err);
+    res.status(500).json({ error: "Failed to count students" });
+  }
+};
+
+exports.countBooks = async (req, res) => {
+  try {
+    const count = await regModels.countBooks();
+    res.render("adminDashboard.ejs", { count });
+    console.log("Total students count:", count);
+  } catch (err) {
+    console.error("Error counting students:", err);
+    res.status(500).json({ error: "Failed to count students" });
+  }
+};
 exports.homePage = (req, res) => {
   res.render("home.ejs");
 };
@@ -19,7 +51,24 @@ exports.loginPage = (req, res) => {
   res.render("login.ejs", { msg: "" });
 };
 
-exports.adminLogin = (req, res) => {
+exports.adminDashboard = async (req, res) => {
+  try {
+    const studentCount = await regModels.countStudents();
+    const categoryCount = await regModels.countCategories();
+    const BookCount = await regModels.countBooks();
+    res.render("adminDashboard.ejs", {
+      studentCount,
+      categoryCount,
+      BookCount,
+    });
+  } catch (err) {
+    res
+      .status(500)
+      .render("error.ejs", { msg: "Error loading dashboard", code: 500 });
+  }
+};
+
+exports.adminLogin = async (req, res) => {
   const adminData = {
     username: "Admin",
     password: "Admin@123",
@@ -27,13 +76,54 @@ exports.adminLogin = (req, res) => {
   const { username, password } = req.body;
 
   if (username === adminData.username && password === adminData.password) {
-    res.render("adminDashboard");
+    // Issue JWT for admin
+    const token = jwt.sign(
+      { username: adminData.username, role: "admin" },
+      process.env.JWT_SECRET,
+      { expiresIn: "2h" }
+    );
+    res.cookie("token", token, { httpOnly: true });
+    try {
+      const studentCount = await regModels.countStudents();
+      const categoryCount = await regModels.countCategories();
+      const BookCount = await regModels.countBooks();
+      res.render("adminDashboard.ejs", {
+        studentCount,
+        categoryCount,
+        BookCount,
+      });
+    } catch (err) {
+      res
+        .status(500)
+        .render("error.ejs", { msg: "Error loading dashboard", code: 500 });
+    }
   } else {
     res.status(STATUS.UNAUTHORIZED).render("error.ejs", {
       msg: "Invalid credentials",
       code: STATUS.UNAUTHORIZED,
     });
   }
+};
+
+exports.logout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+        msg: "Error logging out",
+        code: STATUS.INTERNAL_ERROR,
+      });
+    }
+    res.clearCookie("token");
+    res.redirect("/login");
+  });
+};
+exports.adminProfile = (req, res) => {
+  const adminData = {
+    username: "Admin",
+    password: "Admin@123",
+  };
+  res.render("adminProfile.ejs", { adminData });
 };
 
 exports.aboutUs = (req, res) => {
@@ -292,11 +382,11 @@ exports.afterUpdateCat = async (req, res) => {
 
 exports.addBookForm = async (req, res) => {
   let categories = await regModels.getViewcategorie();
-  res.render("addBooks.ejs", { categories ,msg:""});
+  res.render("addBooks.ejs", { categories, msg: "" });
 };
 
 // Handle book saving
-exports.addBook = (req, res) => {
+exports.addBook = async (req, res) => {
   const {
     title,
     author,
@@ -309,8 +399,8 @@ exports.addBook = (req, res) => {
   } = req.body;
   const image = "/uploads/" + req.file.filename;
 
-  regModels
-    .addBook(
+  try {
+    await regModels.addBook(
       title,
       author,
       publisher,
@@ -320,14 +410,13 @@ exports.addBook = (req, res) => {
       available_copies,
       status,
       image
-    )
-    .then(() => {
-      res.render("adminDashboard.ejs");
-    })
-    .catch((err) => {
-      console.error("Add Book Error:", err);
-      res.render("error.ejs");
-    });
+    );
+    const count = await regModels.countStudents();
+    res.render("adminDashboard.ejs", { count });
+  } catch (err) {
+    console.error("Add Book Error:", err);
+    res.render("error.ejs");
+  }
 };
 
 exports.viewBooks = async (req, res) => {
@@ -342,7 +431,6 @@ exports.viewBooks = async (req, res) => {
     });
   }
 };
-
 
 exports.deleteBooks = async (req, res) => {
   try {
@@ -444,7 +532,7 @@ exports.viewALLIssueBooks = (req, res) => {
         msg: "Error fetching students.",
         code: STATUS.INTERNAL_ERROR,
       });
-    } 
+    }
     res.render("viewIssueBook.ejs", { data: result });
   });
 };
@@ -459,8 +547,8 @@ exports.viewReturnedBooks = (req, res) => {
         msg: "Error fetching students.",
         code: STATUS.INTERNAL_ERROR,
       });
-    } 
-    res.render("viewIssueBook.ejs", { data: result });
+    }
+    res.render("viewReturnedBooks.ejs", { data: result });
   });
 };
 
@@ -490,7 +578,7 @@ exports.issueBook = (req, res) => {
 
 exports.searchName = async (req, res) => {
   try {
-    const { q } = req.query; // Use 'q' because your front-end is sending 'q' not 'name'
+    const { q } = req.query;
     const result = await regModels.searchName(q);
     res.json(result);
   } catch (err) {
@@ -501,7 +589,7 @@ exports.searchName = async (req, res) => {
 
 exports.searchbook = async (req, res) => {
   try {
-    const { q } = req.query; // Use 'q' because your front-end is sending 'q' not 'name'
+    const { q } = req.query;
     const result = await regModels.searchbook(q);
     res.json(result);
   } catch (err) {
@@ -513,61 +601,68 @@ exports.searchbook = async (req, res) => {
 //User Page
 
 exports.userLogin = (req, res) => {
-    console.log("User Login page requested");
-    res.render("userLogin.ejs", { msg: "" });
+  console.log("User Login page requested");
+  res.render("userLogin.ejs", { msg: "" });
 };
 
-exports.studentLogin = (req, res) => {
-    let {username,password}=req.body;
+exports.studentLogin = async (req, res) => {
+  let { username, password } = req.body;
 
-    regModels.getLoginProfile(username,password).then((profile)=>{
-    if(profile.length>0){
-      req.session.uid=profile[0].id;
-      res.render("userDashboard.ejs",{user:profile[0]});
+  try {
+    const profile = await regModels.getLoginProfile(username, password);
+    if (profile.length > 0) {
+      const token = jwt.sign(
+        { id: profile[0].id, email: profile[0].email, role: profile[0].role },
+        process.env.JWT_SECRET,
+        { expiresIn: "2h" }
+      );
+      res.cookie("token", token, { httpOnly: true });
+
+      // Fetch counts for dashboard
+      const bookCount = await regModels.countBooks();
+      const categoryCount = await regModels.countCategories();
+
+      res.render("userDashboard.ejs", {
+        data: profile[0],
+        token,
+        bookCount,
+        categoryCount,
+      });
+    } else {
+      res.render("error.ejs", { msg: "user not found" });
     }
-    else{
-      res.render("error.ejs",{msg:"user not found"});
-    }
-   })
-   .catch((err)=>{
-      console.log("Error fetching user",err);
-      res.render("error.ejs",{msg:"Internal server problem"});
-   })
+  } catch (err) {
+    console.log("Error fetching user", err);
+    res.render("error.ejs", { msg: "Internal server problem" });
+  }
 };
 
 //search
 exports.searchByCat = async (req, res) => {
   try {
-    const userId = req.session.uid;
+    const userId = req.user.id;
 
-    // Check if user is logged in
-    if (!userId) {
-      return res.status(401).render("error.ejs", {
-        msg: "Unauthorized access. Please login first.",
-        code: 401
-      });
-    }
-
-    // Fetch user data
     conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
       if (err || users.length === 0) {
         console.error("User fetch error:", err || "No user found");
         return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
           msg: "Error fetching user.",
-          code: STATUS.INTERNAL_ERROR
+          code: STATUS.INTERNAL_ERROR,
         });
       }
 
-      // Fetch books
-      regModels.viewUserBook().then((books) => {
-        res.render("userViewBooks.ejs", { books, data: users[0] }); // Pass both books and data
-      }).catch((err) => {
-        console.error(err);
-        res.status(500).render("error.ejs", {
-          code: 500,
-          msg: "Failed to load books.",
+      regModels
+        .viewUserBook()
+        .then((books) => {
+          res.render("userViewBooks.ejs", { books, data: users[0] });
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).render("error.ejs", {
+            code: 500,
+            msg: "Failed to load books.",
+          });
         });
-      });
     });
   } catch (err) {
     console.error(err);
@@ -580,36 +675,29 @@ exports.searchByCat = async (req, res) => {
 
 exports.searchByAuth = async (req, res) => {
   try {
-    const userId = req.session.uid;
+    const userId = req.user.id;
 
-    // Check if user is logged in
-    if (!userId) {
-      return res.status(401).render("error.ejs", {
-        msg: "Unauthorized access. Please login first.",
-        code: 401
-      });
-    }
-
-    // Fetch user data
     conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
       if (err || users.length === 0) {
         console.error("User fetch error:", err || "No user found");
         return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
           msg: "Error fetching user.",
-          code: STATUS.INTERNAL_ERROR
+          code: STATUS.INTERNAL_ERROR,
         });
       }
 
-      // Fetch books
-      regModels.searchAuthor().then((books) => {
-        res.render("userViewBooks.ejs", { books, data: users[0] }); // Pass both books and data
-      }).catch((err) => {
-        console.error(err);
-        res.status(500).render("error.ejs", {
-          code: 500,
-          msg: "Failed to load books.",
+      regModels
+        .searchAuthor()
+        .then((books) => {
+          res.render("userViewBooks.ejs", { books, data: users[0] });
+        })
+        .catch((err) => {
+          console.error(err);
+          res.status(500).render("error.ejs", {
+            code: 500,
+            msg: "Failed to load books.",
+          });
         });
-      });
     });
   } catch (err) {
     console.error(err);
@@ -621,26 +709,18 @@ exports.searchByAuth = async (req, res) => {
 };
 
 exports.userIssueBook = (req, res) => {
-    const userId = req.session.uid;
+  const userId = req.user.id;
 
-    // Check if user is logged in
-    if (!userId) {
-        return res.status(401).render("error.ejs", {
-            msg: "Unauthorized access. Please login first.",
-            code: 401
-        });
+  conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+    if (err || users.length === 0) {
+      console.error("User fetch error:", err || "No user found");
+      return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+        msg: "Error fetching user.",
+        code: STATUS.INTERNAL_ERROR,
+      });
     }
 
-    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
-        if (err || users.length === 0) {
-            console.error("User fetch error:", err || "No user found");
-            return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-                msg: "Error fetching user.",
-                code: STATUS.INTERNAL_ERROR
-            });
-        }
-
-        const sql = `
+    const sql = `
             SELECT 
                 issue_details.id,
                 users.name AS name,
@@ -657,56 +737,66 @@ exports.userIssueBook = (req, res) => {
                 AND issue_details.status = 'issued'
         `;
 
-        conn.query(sql, [userId], (err, issues) => {
-            if (err) {
-                console.error("SQL error:", err);
-                return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-                    msg: "Error fetching issued books.",
-                    code: STATUS.INTERNAL_ERROR
-                });
-            }
-
-            res.render("userIssueBook.ejs", { data: users[0], issues });
+    conn.query(sql, [userId], (err, issues) => {
+      if (err) {
+        console.error("SQL error:", err);
+        return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+          msg: "Error fetching issued books.",
+          code: STATUS.INTERNAL_ERROR,
         });
+      }
+
+      res.render("userIssueBook.ejs", { data: users[0], issues });
     });
+  });
 };
 
-exports.userDashboard = (req, res) => {
-    const userId = req.session.uid;
-
-    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
-        if (err || users.length === 0) {
-            return res.status(500).render("error.ejs", {
-                msg: "User not found",
-                code: 500
-            });
+exports.userDashboard = async (req, res) => {
+  const userId = req.user.id;
+  try {
+    // Fetch user info
+    const [users] = await new Promise((resolve, reject) => {
+      conn.query(
+        "SELECT * FROM users WHERE id = ?",
+        [userId],
+        (err, result) => {
+          if (err || result.length === 0)
+            return reject(err || "User not found");
+          resolve(result);
         }
-
-        res.render("userDashboard.ejs", { data: users[0] });
+      );
     });
+
+    // Fetch counts
+    const bookCount = await regModels.countBooks();
+    const categoryCount = await regModels.countCategories();
+
+    res.render("userDashboard.ejs", {
+      data: users,
+      bookCount,
+      categoryCount,
+    });
+  } catch (err) {   
+    res.status(500).render("error.ejs", {
+      msg: "User not found or error loading dashboard",
+      code: 500,
+    });
+  }
 };
 
 exports.userReturnBook = (req, res) => {
-    const userId = req.session.uid;
+  const userId = req.user.id;
 
-    // Check if user is logged in
-    if (!userId) {
-        return res.status(401).render("error.ejs", {
-            msg: "Unauthorized access. Please login first.",
-            code: 401
-        });
+  conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+    if (err || users.length === 0) {
+      console.error("User fetch error:", err || "No user found");
+      return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+        msg: "Error fetching user.",
+        code: STATUS.INTERNAL_ERROR,
+      });
     }
 
-    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
-        if (err || users.length === 0) {
-            console.error("User fetch error:", err || "No user found");
-            return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-                msg: "Error fetching user.",
-                code: STATUS.INTERNAL_ERROR
-            });
-        }
-
-        const sql = `
+    const sql = `
             SELECT 
                 issue_details.id,
                 users.name AS name,
@@ -723,71 +813,59 @@ exports.userReturnBook = (req, res) => {
                 AND issue_details.status = 'returned'
         `;
 
-        conn.query(sql, [userId], (err, issues) => {
-            if (err) {
-                console.error("SQL error:", err);
-                return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
-                    msg: "Error fetching issued books.",
-                    code: STATUS.INTERNAL_ERROR
-                });
-            }
-
-            res.render("userIssueBook.ejs", { data: users[0], issues });
+    conn.query(sql, [userId], (err, issues) => {
+      if (err) {
+        console.error("SQL error:", err);
+        return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+          msg: "Error fetching issued books.",
+          code: STATUS.INTERNAL_ERROR,
         });
+      }
+
+      res.render("userIssueBook.ejs", { data: users[0], issues });
     });
+  });
 };
 
 exports.userReturnDashboard = (req, res) => {
-    const userId = req.session.uid;
+  const userId = req.user.id;
 
-    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
-        if (err || users.length === 0) {
-            return res.status(500).render("error.ejs", {
-                msg: "User not found",
-                code: 500
-            });
-        }
+  conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+    if (err || users.length === 0) {
+      return res.status(500).render("error.ejs", {
+        msg: "User not found",
+        code: 500,
+      });
+    }
 
-        res.render("userDashboard.ejs", { data: users[0] });
-    });
+    res.render("userDashboard.ejs", { data: users[0] });
+  });
 };
 
 // user profile
 
 exports.userProfile = (req, res) => {
-    const userId = req.session.uid;
+  const userId = req.user.id;
 
-    // Check if userId is defined (i.e., user is logged in)
-    if (!userId) {
-        return res.status(401).render("error.ejs", {
-            msg: "Please log in to view your profile",
-            code: 401
-        });
+  conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
+    if (err) {
+      console.error("Database error:", err);
+      return res.status(500).render("error.ejs", {
+        msg: "Database error",
+        code: 500,
+      });
     }
 
-    console.log("User ID:", userId); // Debug log
+    if (users.length === 0) {
+      return res.status(404).render("error.ejs", {
+        msg: "User not found",
+        code: 404,
+      });
+    }
 
-    conn.query("SELECT * FROM users WHERE id = ?", [userId], (err, users) => {
-        console.log("User ID in query:", userId); // Debug log
-        if (err) {
-            console.error("Database error:", err); // Log the actual error
-            return res.status(500).render("error.ejs", {
-                msg: "Database error",
-                code: 500
-            });
-        }
-
-        if (users.length === 0) {
-            return res.status(404).render("error.ejs", {
-                msg: "User not found",
-                code: 404
-            });
-        }
-
-        res.render("userProfile.ejs", { user: users[0] });
-    });
+    res.render("userProfile.ejs", { user: users[0] });
+  });
 };
-
 
 //update issued books
 
@@ -825,7 +903,8 @@ exports.beforeUpdateIssueBook = async (req, res) => {
 exports.afterUpdateIssueBook = (req, res) => {
   const { status, id } = req.body;
 
-  regModels.getafterupdateissueBooks(status, id)
+  regModels
+    .getafterupdateissueBooks(status, id)
     .then(() => {
       res.redirect("/viewIssuedBooks");
     })
@@ -838,7 +917,7 @@ exports.afterUpdateIssueBook = (req, res) => {
 exports.allBook = async (req, res) => {
   try {
     const books = await regModels.viewBooks();
-    res.render("allBooks.ejs", { books }); // filename should match
+    res.render("allBooks.ejs", { books });
   } catch (err) {
     console.error(err);
     res.status(500).render("error.ejs", {
@@ -846,4 +925,18 @@ exports.allBook = async (req, res) => {
       msg: "Failed to load books.",
     });
   }
+};
+
+exports.userLogout = (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error("Error destroying session:", err);
+      return res.status(STATUS.INTERNAL_ERROR).render("error.ejs", {
+        msg: "Error logging out",
+        code: STATUS.INTERNAL_ERROR,
+      });
+    }
+    res.clearCookie("token");
+    res.redirect("/userLogin");
+  });
 };

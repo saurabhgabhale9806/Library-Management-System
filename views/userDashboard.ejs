@@ -1,40 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>User Dashboard</title>
   <link rel="stylesheet" href="/userDashboard.css" />
+  <link rel="stylesheet" href="admindashboard.css" />
 </head>
+
 <body>
   <%- include('partials/userHeader') %>
 
-  <div class="layout">
-    <% const safeData = typeof data !== 'undefined' ? data : {}; %>
-    <%- include('partials/userSidebar', { data: safeData }) %>
+    <div class="layout">
+      <% const safeData=typeof data !=='undefined' ? data : {}; %>
+        <%- include('partials/userSidebar', { data: safeData }) %>
 
-    <main class="main-content">
-      <div class="card-section">
-        <div class="card category">
-          <h2>310 Categories</h2>
-          <p>Active Categories</p>
-        </div>
-        <div class="card book">
-          <h2>1060 Books</h2>
-          <p>Available Books</p>
-        </div>
-      </div>
-    </main>
-  </div>
+          <main class="main-content">
+            <div class="card-section">
+              <div class="card category">
+                <h2>
+                  <%= typeof categoryCount !=='undefined' ? categoryCount : 0 %> Categories
+                </h2>
+                <p>Active Categories</p>
+              </div>
+              <div class="card book">
+                <h2>
+                  <%= typeof bookCount !=='undefined' ? bookCount : 0 %> Books
+                </h2>
+                <p>Available Books</p>
+              </div>
+            </div>
+          </main>
+    </div>
 
-  <script>
-    function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('active');
-    }
+    <script>
+      function toggleSidebar() {
+        document.getElementById('sidebar').classList.toggle('active');
+      }
 
-    function toggleDropdown(element) {
-      element.parentElement.classList.toggle('open');
-    }
-  </script>
+      function toggleDropdown(element) {
+        element.parentElement.classList.toggle('open');
+      }
+    </script>
 </body>
+
 </html>

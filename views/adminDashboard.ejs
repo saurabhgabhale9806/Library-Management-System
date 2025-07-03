@@ -1,68 +1,75 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="/admindashboard.css" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
 
   <!-- Header Partial -->
   <%- include('partials/header') %>
 
-  <div class="layout">
-    <!-- Sidebar Partial -->
-    <%- include('partials/sidebar') %>
+    <div class="layout">
+      <!-- Sidebar Partial -->
+      <%- include('partials/sidebar') %>
 
-    <main class="main-content">
-      <div class="card-section">
-        <div class="card student">
-          <h2>450 Students</h2>
-          <p>Total Registered</p>
-        </div>
-        <div class="card category">
-          <h2>310 Categories</h2>
-          <p>Active Categories</p>
-        </div>
-        <div class="card book">
-          <h2>560 Books</h2>
-          <p>Available Books</p>
-        </div>
-      </div>
+        <main class="main-content">
+          <div class="card-section">
+            <div class="card student">
+              <h2>
+                <%= studentCount %> Students
+              </h2>
+              <p>Total Registered</p>
+            </div>
+            <div class="card category">
+              <h2>
+                <%= categoryCount %> Categories
+              </h2> 
+              <p>Active Categories</p>
+            </div>
+            <div class="card book">
+              <h2><%= BookCount %> Books</h2>
+              <p>Available Books</p>
+            </div>
+          </div>
 
-      <div id="students" class="tab-content"></div>
+          <div id="students" class="tab-content"></div>
 
-      <div id="books" class="tab-content" style="display: none;">
-        <table>
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Author</th>
-              <th>Category</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Atomic Habits</td>
-              <td>James Clear</td>
-              <td>Self-help</td>
-              <td>Available</td>
-            </tr>
-            <tr>
-              <td>Clean Code</td>
-              <td>Robert C. Martin</td>
-              <td>Programming</td>
-              <td>Issued</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </main>
-  </div>
+          <div id="books" class="tab-content" style="display: none;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Author</th>
+                  <th>Category</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Atomic Habits</td>
+                  <td>James Clear</td>
+                  <td>Self-help</td>
+                  <td>Available</td>
+                </tr>
+                <tr>
+                  <td>Clean Code</td>
+                  <td>Robert C. Martin</td>
+                  <td>Programming</td>
+                  <td>Issued</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </main>
+    </div>
 
-  <script src="/dashboard.js"></script>
+    <script src="/dashboard.js"></script>
 </body>
+
 </html>

@@ -435,3 +435,40 @@ exports.getafterupdateissueBooks = (status, id) => {
     );
   });
 };
+
+
+exports.countStudents = () => {
+  return new Promise((resolve, reject) => {
+    conn.query("SELECT COUNT(*) AS total FROM users WHERE role = 'member'", (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result[0].total); 
+      }
+    });
+  });
+};
+
+exports.countCategories = () => {
+  return new Promise((resolve, reject) => {
+    conn.query("SELECT COUNT(*) AS total FROM categories", (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result[0].total); 
+      }
+    });
+  });
+};
+
+exports.countBooks = () => {
+  return new Promise((resolve, reject) => {
+    conn.query("SELECT COUNT(*) AS total FROM books", (err, result) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(result[0].total); 
+      }
+    });
+  });
+};
