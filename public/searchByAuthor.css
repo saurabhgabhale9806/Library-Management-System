@@ -14,7 +14,6 @@ body {
 /* Search Bar */
 .search-bar {
   text-align: center;
-  /* margin: 20px auto; */
 }
 
 .search-box {
@@ -36,10 +35,10 @@ body {
 .book-container {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 20px;
   padding: 20px;
-  overflow:auto;
+  overflow: auto;
 }
 
 /* Individual Book Card */
@@ -47,12 +46,15 @@ body {
   background: #2c2f33;
   border-radius: 14px;
   padding: 15px;
-  width: 100%;
-  max-width: 550px;
+  width: 300px;
+  max-width: 100%;
   box-shadow: 0 6px 16px rgba(30, 107, 184, 0.5);
   border: 1px solid #444;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
 }
 
 .book-card:hover {
@@ -126,6 +128,7 @@ body {
   }
 
   .book-card {
+    width: 95%;
     max-width: 95%;
   }
 
@@ -143,7 +146,8 @@ body {
 @media (min-width: 768px) {
   .book-card {
     width: 30%;
-    max-width: none;
+    min-width: 250px;
+    max-width: 350px;
   }
 }
 
@@ -180,3 +184,19 @@ body {
   font-size: 1rem;
   margin: 0 10px;
 }
+
+/* Force row layout if anything overrides */
+.book-container {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 20px !important;
+  justify-content: flex-start !important;
+}
+
+.book-card {
+  width: 300px !important;
+  flex: 0 1 300px !important;
+  margin-bottom: 20px !important;
+  display: flex !important;
+  flex-direction: column !important;
+} 

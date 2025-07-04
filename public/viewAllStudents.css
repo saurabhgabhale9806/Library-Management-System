@@ -151,7 +151,9 @@ header {
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #ffffff;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  color: black;
 }
 
 thead {
@@ -168,6 +170,7 @@ th {
   text-align: left;
   font-weight: 600;
   white-space: nowrap;
+  
 }
 
 td {
@@ -176,6 +179,7 @@ td {
   text-align: left;
   font-size: 12px;
   word-wrap: break-word;
+  color: white;
 }
 
 tr {
@@ -183,7 +187,8 @@ tr {
 }
 
 tr:hover {
-  background-color: #f8fafc;
+  background: linear-gradient(135deg, #04265d, #18284c);
+  cursor: pointer;
 }
 
 /* Centered message when no data */

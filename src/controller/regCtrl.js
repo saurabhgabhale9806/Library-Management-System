@@ -115,6 +115,7 @@ exports.logout = (req, res) => {
       });
     }
     res.clearCookie("token");
+    console.log("User logged out successfully");
     res.redirect("/login");
   });
 };

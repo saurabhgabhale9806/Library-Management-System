@@ -24,6 +24,28 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
 }
 
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
+
+.back-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #e63946; /* Red background */
+  color: #ffffff; /* White text for contrast */
+  text-decoration: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.back-button:hover {
+  background: #b32d38; /* Darker red on hover */
+  transform: translateY(-2px);
+}
+
 .about-container h1 {
   text-align: center;
   font-size: 2.5rem;
@@ -150,5 +172,10 @@ ul li {
   .creator-card .profile-pic {
     width: 80px;
     height: 80px;
+  }
+
+  .back-button {
+    padding: 8px 15px;
+    font-size: 0.9rem;
   }
 }

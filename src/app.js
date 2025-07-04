@@ -5,6 +5,7 @@ let session = require("express-session");
 const multer = require("multer");
 let path = require("path");
 require('dotenv').config();
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 let router = require("../src/routes/regRoutes.js");

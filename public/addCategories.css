@@ -20,12 +20,13 @@ body {
   display: flex;
   width: 100%;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 /* Sidebar styling (light theme) */
 .sidebar {
-  width: 240px;
-  background-color: #ffffff;
+  width: 250px;
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
   padding: 1rem;
   min-height: 100vh;
   border-right: 1px solid #e2e8f0;

@@ -1,5 +1,5 @@
 <header class="navbar">
-  <a href="/UserLogin" class="logo">📚 Users Dashboard</a>
+  <a href="/userDashboard" class="logo">📚 Users Dashboard</a>
   <div class="user-profile">
     <div class="profile-picture-container">
       <img src="/images/default-profile.png" alt="Profile Picture" class="profile-picture" id="profilePicture" onclick="document.getElementById('profileImageInput').click();">
@@ -8,9 +8,9 @@
     <a href="/profile" class="profile-link">
       <span>Profile</span>
     </a>
-     <div class="logout">
-       <button> <a href="/userLogout">Logout</a></button>
-    </div>
+    <form class="logout" action="/userLogout" method="GET" style="display:inline;">
+      <button type="submit">Logout</button>
+    </form>
   </div>
   <div class="menu-toggle" onclick="toggleSidebar()">☰</div>
 </header>

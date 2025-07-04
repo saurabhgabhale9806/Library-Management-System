@@ -75,7 +75,7 @@ body {
 
 .search-box input:focus {
   border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);  
   outline: none;
 }
 
@@ -83,16 +83,19 @@ body {
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #ffffff;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
   border-radius: 16px;
   overflow: hidden;
+  color: #e2e8f0;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.05);
 }
 
 /* Table Head */
 thead {
-  background-color: #e2e8f0;
-  color: #1e293b;
+   background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
+  color: #fcfcfc;
 }
 
 thead th {
@@ -112,7 +115,8 @@ tbody tr {
 }
 
 tbody tr:hover {
-  background-color: #f8fafc;
+  color: #ffffff  ;
+  background-color: #1a1d72ac;
 }
 
 tbody td {

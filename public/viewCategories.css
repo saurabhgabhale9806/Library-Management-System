@@ -109,15 +109,24 @@ body {
 table {
   width: 100%;
   border-collapse: collapse;
-  background-color: #ffffff;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px);
   border-radius: 8px;
   overflow: hidden;
   min-width: 600px;
 }
 
 thead {
-  background-color: #e2e8f0;
-  color: #1e293b;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: #e2e8f0;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 th, td {
@@ -128,12 +137,17 @@ th, td {
 }
 
 td {
-  background-color: #ffffff;
-  color: #334155;
+  /* background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(10px); */
+  border-bottom: 1px solid #e2e8f0;
+  font-size: 14px;
+  word-wrap: break-word;
+  color: #cbd5e1;
 }
 
 tr:hover {
-  background-color: #f8fafc;
+   background: linear-gradient(135deg, #04265d, #18284c);
+  cursor: pointer;
 }
 
 /* Button Styles */
