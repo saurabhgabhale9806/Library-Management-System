@@ -1,58 +1,74 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Issued Book Records</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/userDashboard.css">
   <link rel="stylesheet" href="/userIssueBooks.css">
-  <link rel="stylesheet" href="admindashboard.css">
+  <link rel="stylesheet" href="/admindashboard.css">
 </head>
+
 <body>
   <%- include('partials/userHeader') %>
 
-  <div class="layout">
-    <% const safeData = typeof data !== 'undefined' ? data : {}; %>
-    <%- include('partials/userSidebar', { data: safeData }) %>
+    <div class="layout">
+      <% const safeData=typeof data !=='undefined' ? data : {}; %>
+        <%- include('partials/userSidebar', { data: safeData }) %>
 
-    <div class="container">
-      <div class="header">
-        <h2>Issued Book Records</h2>
-        <div class="search-box">
-          <input type="text" placeholder="🔍 Search" />
-        </div>
-      </div>
+          <div class="container">
+            <div class="header">
+              <h2>Issued Book Records</h2>
+              <div class="search-box">
+                <input type="text" placeholder="🔍 Search" />
+              </div>
+            </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Book Name</th>
-            <th>Issued By</th>
-            <th>Issue Date</th>
-            <th>Return Date</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% issues.forEach((issue, index) => { %>
-            <tr>
-              <td data-label="ID"><%= issue.id %></td>
-              <td data-label="Book ID"><%= issue.title %></td>
-              <td data-label="Issued By"><%= issue.name %></td>
-              <td data-label="Issue Date"><%= issue.issue_date.toLocaleDateString() %></td>
-              <td data-label="Return Date"><%= issue.return_date.toLocaleDateString() %></td>
-              <td data-label="Status">
-                <span class="status <%= issue.status === 'Active' ? 'active' : 'inactive' %>">
-                  <%= issue.status %>
-                </span>
-              </td>
-            </tr>
-          <% }) %>
-        </tbody>
-      </table>
+            <div class="table-scroll">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Book Name</th>
+                    <th>Issued By</th>
+                    <th>Issue Date</th>
+                    <th>Return Date</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% issues.forEach((issue, index)=> { %>
+                    <tr>
+                      <td data-label="ID">
+                        <%= issue.id %>
+                      </td>
+                      <td data-label="Book Name">
+                        <%= issue.title %>
+                      </td>
+                      <td data-label="Issued By">
+                        <%= issue.name %>
+                      </td>
+                      <td data-label="Issue Date">
+                        <%= issue.issue_date.toLocaleDateString() %>
+                      </td>
+                      <td data-label="Return Date">
+                        <%= issue.return_date.toLocaleDateString() %>
+                      </td>
+                      <td data-label="Status">
+                        <span class="status <%= issue.status === 'Active' ? 'active' : 'inactive' %>">
+                          <%= issue.status %>
+                        </span>
+                      </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+              </table>
+            </div>
+          </div>
     </div>
-  </div>
 
-  <script src="/dashboard.js"></script>
+    <script src="/dashboard.js"></script>
 </body>
+
 </html>

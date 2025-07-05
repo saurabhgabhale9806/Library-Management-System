@@ -290,6 +290,7 @@ tr:hover {
     display: block;
   }
   td {
+    color: #64748b;
     position: relative;
     padding-left: 50%;
     text-align: right;

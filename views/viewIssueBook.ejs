@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!-- ...existing code... -->
 <head>
     <meta charset="UTF-8" />
     <title>Issued Book Records</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- ADD THIS LINE -->
     <link rel="stylesheet" href="/admindashboard.css" />
     <link rel="stylesheet" href="/viewIssueBooks.css" />
 </head>
-
+<!-- ...existing code... -->
 <body>
     <!-- Include Header -->
     <%- include('partials/header') %>
@@ -24,49 +26,46 @@
                 </div>
             </div>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Book Name</th>
-                        <th>Issued By</th>
-                        <th>Issue Date</th>
-                        <th>Return Date</th>
-                        <th>Status</th>
-                        <th>Update</th>
-                    </tr>
-                </thead>
-                <tbody id="tbody">
-                    <% if (data.length === 0) { %>
+            <div class="table-scroll">
+                <table>
+                    <thead>
                         <tr>
-                            <td colspan="8">No data available</td>
+                            <th>ID</th>
+                            <th>Book Name</th>
+                            <th>Issued By</th>
+                            <th>Issue Date</th>
+                            <th>Return Date</th>
+                            <th>Status</th>
+                            <th>Update</th>
                         </tr>
-                    <% } else { data.forEach((item, index) => { %>
-                        <tr>
-                            <td data-label="ID"><%= index + 1 %></td>
-                            <td data-label="Book ID"><%= item.title %></td>
-                            <td data-label="Issued By"><%= item.name %></td>
-                            <td data-label="Issue Date"><%= item.issue_date.toLocaleDateString() %></td>
-                            <td data-label="Return Date"><%= item.return_date.toLocaleDateString() %></td>
-                            <td data-label="Status">
-                                <span class="status <%= item.status === 'returned' ? 'returned' : 'active' %>">
-                                    <%= item.status %>
-                                </span>
-                            </td>
-                            <!-- <td data-label="Delete">
-                                <div class="button-group">
-                                    <a class="btn btn-delete" href="/deleteIssued?id=<%= item.id %>">Delete</a>
-                                </div>
-                            </td> -->
-                            <td data-label="Update">
-                                <div class="button-group">
-                                    <a class="btn btn-update" href="/beforeUpdateIssueBook?id=<%= item.id %>">Update</a>
-                                </div>
-                            </td>
-                        </tr>
-                    <% }) } %>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody id="tbody">
+                        <% if (data.length === 0) { %>
+                            <tr>
+                                <td colspan="8">No data available</td>
+                            </tr>
+                        <% } else { data.forEach((item, index) => { %>
+                            <tr>
+                                <td data-label="ID"><%= index + 1 %></td>
+                                <td data-label="Book Name"><%= item.title %></td>
+                                <td data-label="Issued By"><%= item.name %></td>
+                                <td data-label="Issue Date"><%= item.issue_date.toLocaleDateString() %></td>
+                                <td data-label="Return Date"><%= item.return_date.toLocaleDateString() %></td>
+                                <td data-label="Status">
+                                    <span class="status <%= item.status === 'returned' ? 'returned' : 'active' %>">
+                                        <%= item.status %>
+                                    </span>
+                                </td>
+                                <td data-label="Update">
+                                    <div class="button-group">
+                                        <a class="btn btn-update" href="/beforeUpdateIssueBook?id=<%= item.id %>">Update</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        <% }) } %>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 

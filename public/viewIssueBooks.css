@@ -80,6 +80,11 @@ body {
 }
 
 /* Table */
+.table-scroll {
+  width: 100%;
+  overflow: visible;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -113,7 +118,7 @@ tbody tr {
 }
 
 tbody tr:hover {
-  color: #1e293b  ;
+  color: #1e293b;
   background-color: #1a1d72ac;
 }
 
@@ -223,6 +228,18 @@ tbody td {
 
 /* Responsive Table */
 @media (max-width: 768px) {
+  .table-scroll {
+    max-height: 60vh;         /* Adjust as needed */
+    overflow-y: auto;
+    width: 100%;
+    -webkit-overflow-scrolling: touch;
+    background: #fff;
+    border-radius: 10px;
+  }
+  .table-scroll table {
+    width: 100%;
+    margin: 0;
+  }
   table,
   thead,
   tbody,
@@ -239,29 +256,44 @@ tbody td {
 
   tbody tr {
     margin-bottom: 15px;
-    background-color: #ffffff;
+    background-color: #ffffff !important;
     border-radius: 10px;
     box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
     padding: 12px;
     border: 1px solid #e2e8f0;
+    color: #1e293b !important;
+    transition: none;
+  }
+
+  tbody tr:hover {
+    background-color: #ffffff !important;
+    color: #1e293b !important;
   }
 
   tbody td {
     display: flex;
-    justify-content: space-between;
-    padding: 10px;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10px 10px 10px 120px;
     border-bottom: 1px solid #e5e7eb;
-    text-align: right;
+    text-align: left;
     position: relative;
-    padding-left: 50%;
+    min-height: 44px;
+    font-size: 15px;
+    background: none;
+    color: #1e293b !important;
+    overflow-wrap: anywhere;
   }
 
   tbody td::before {
-    content: attr(data-label);
+    content: attr(data-label) ": ";
     position: absolute;
     left: 10px;
+    top: 10px;
     font-weight: 600;
     color: #64748b;
+    min-width: 100px;
     text-align: left;
+    white-space: pre-line;
   }
 }
