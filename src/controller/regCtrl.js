@@ -1,7 +1,7 @@
 let regService = require("../services/regServices.js");
 let regModels = require("../model/regModel.js");
 const conn = require("../config/db.js");
-const jwt = require("jsonwebtoken");
+const jwt   = require("jsonwebtoken");
 
 // HTTP Status Codes
 const STATUS = {
@@ -412,11 +412,22 @@ exports.addBook = async (req, res) => {
       status,
       image
     );
-    const count = await regModels.countStudents();
-    res.render("adminDashboard.ejs", { count });
+    // Fetch all counts for dashboard
+    const studentCount = await regModels.countStudents();
+    const categoryCount = await regModels.countCategories();
+    const BookCount = await regModels.countBooks();
+
+    res.render("adminDashboard.ejs", {
+      studentCount,
+      categoryCount,
+      BookCount,
+    });
   } catch (err) {
     console.error("Add Book Error:", err);
-    res.render("error.ejs");
+    res.status(500).render("error.ejs", {
+      msg: "Error adding book.",
+      code: 500,
+    });
   }
 };
 
